@@ -11,7 +11,7 @@ class ProdutoController extends Controller
     public function index()
     {
         $produtos = Produto::all();
-        return view('produtos.index', compact('produtos'));
+        return view('produtos', compact('produtos'));
     }
 
     // Exibe o formulário para criar um novo produto

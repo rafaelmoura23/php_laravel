@@ -14,4 +14,6 @@ class Produto extends Model
         'preco',
         'quantidade'
     ];
+
+    
 }
