@@ -1,3 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url('css/app.css') }}">
+
+</head>
+<body>
+    
+</body>
+</html>
 <nav class="navbar">
     <div class="navbar-logo">
         <img src="images/logo.png" alt="Logo">
@@ -8,68 +21,3 @@
         <li><a href="contatos">Contatos 📋</a></li>
     </ul>
 </nav>
-
-<style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-
-        .header-content {
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .site-title {
-            font-size: 2.5em;
-            margin: 0;
-        }
-
-        .site-slogan {
-            font-size: 1.2em;
-            color: #666;
-            margin: 10px 0;
-        }
-
-        .navbar {
-            background-color: #333;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between; /* Distribui espaço entre o logo e a navbar */
-            align-items: center; /* Alinha verticalmente o logo e os itens da navbar */
-            width: 100%;
-        }
-
-        .navbar-logo {
-            margin-left: 20px; /* Margem para o logo */
-        }
-
-        .navbar-logo img {
-            height: 60px; /* Ajuste a altura do logo conforme necessário */
-        }
-
-        .navbar-menu {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        .navbar-menu li {
-            margin: 0;
-        }
-
-        .navbar-menu a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 20px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .navbar-menu a:hover {
-            background-color: #575757;
-        }
-</style>

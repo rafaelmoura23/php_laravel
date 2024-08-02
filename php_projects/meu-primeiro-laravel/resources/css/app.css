@@ -1,51 +1,64 @@
-/* Estilos gerais */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    color: #333;
-    background-color: #f4f4f4;
 }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
+
+.header-content {
     margin: 0 auto;
+    text-align: center;
 }
 
-/* Estilos do header */
-header {
+.site-title {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+.site-slogan {
+    font-size: 1.2em;
+    color: #666;
+    margin: 10px 0;
+}
+
+.navbar {
     background-color: #333;
-    color: #fff;
-    padding: 1rem 0;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    padding: 10px 0;
     display: flex;
-    gap: 1rem;
+    justify-content: space-between; /* Distribui espaço entre o logo e a navbar */
+    align-items: center; /* Alinha verticalmente o logo e os itens da navbar */
+    width: 100%;
 }
 
-nav ul li {
-    display: inline;
+.navbar-logo {
+    margin-left: 20px; /* Margem para o logo */
 }
 
-nav ul li a {
-    color: #fff;
+.navbar-logo img {
+    height: 60px; /* Ajuste a altura do logo conforme necessário */
+}
+
+.navbar-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-menu li {
+    margin: 0;
+}
+
+.navbar-menu a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
     text-decoration: none;
-    font-size: 1rem;
-    padding: 0.5rem;
     transition: background-color 0.3s;
 }
 
-nav ul li a:hover {
-    background-color: #555;
-    border-radius: 0.3rem;
+.navbar-menu a:hover {
+    background-color: #575757;
 }
 

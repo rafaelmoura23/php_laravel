@@ -13,3 +13,8 @@ Route::get('/produtos', function () {
 Route::get('/contatos', function () {
     return view('contatos');
 });
+
+
+use App\Http\Controllers\CssController;
+
+Route::get('css/{filename}', [CssController::class, 'getCss']);
