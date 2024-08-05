@@ -20,6 +20,9 @@ Route::get('/contatos', function () {
 
 
 use App\Http\Controllers\CssController;
+use App\Http\Controllers\MeuModeloController;
 
 Route::get('css/{filename}', [CssController::class, 'getCss']);
+
+Route::get('/meu-model', [MeuModeloController::class]);
 
