@@ -31,7 +31,7 @@ class ProdutoController extends Controller
     {
         $request->validate([
             'nome' => 'required',
-            'preço' => 'required|decimal',
+            'preco' => 'required|numeric',
         ]);
 
         Produto::create($request->all());
@@ -52,7 +52,7 @@ class ProdutoController extends Controller
      */
     public function edit(Produto $produto)
     {
-        return view('produto.edit', compact('produto'));
+        return view('produtos.edit', compact('produto'));
     }
 
     /**
@@ -62,7 +62,7 @@ class ProdutoController extends Controller
     {
         $request->validate([
             'nome' => 'required',
-            'preco' => 'required|decimal',
+            'preco' => 'required|numeric',
         ]);
 
         $produto->update($request->all());
