@@ -1,0 +1,43 @@
+<mxfile host="65bd71144e">
+    <diagram id="9yviPP4A8XzfeQcpLb3o" name="Page-1">
+        <mxGraphModel dx="1036" dy="854" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="3" style="edgeStyle=none;html=1;fontSize=15;" edge="1" parent="1" source="2">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="120" y="120" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;CANDIDATO&lt;/font&gt;" style="whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="20" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="&lt;ul&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Cadastrar-se &lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Atualizar Perfil &lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Pesquisar Vagas&amp;nbsp; &lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Visualizar Vagas&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px; background-color: initial;&quot;&gt;Detalhes da Vaga&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px; background-color: initial;&quot;&gt;Candidatar-se&amp;nbsp;&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Histórico de&amp;nbsp; Candidaturas&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 15px;&quot;&gt;Pesquisar por vagas de empresas&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;" style="whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="120" width="200" height="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" style="edgeStyle=none;html=1;fontSize=15;" edge="1" parent="1" source="5">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="370" y="120" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="5" value="&lt;span style=&quot;font-size: 15px;&quot;&gt;EMPRESA&lt;/span&gt;" style="whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+                    <mxGeometry x="270" y="20" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="&lt;ul style=&quot;font-size: 15px;&quot;&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Cadastrar-se&amp;nbsp;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Atualizar Perfil&amp;nbsp;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Publicar Vagas&amp;nbsp;&lt;/font&gt;&lt;/li&gt;&lt;li&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Visualizar&amp;nbsp;&lt;/font&gt;Candidaturas&amp;nbsp;&lt;/li&gt;&lt;li&gt;Atualizar Vagas(STATUS)&lt;/li&gt;&lt;li&gt;Revisar Histórico&lt;/li&gt;&lt;li&gt;&quot;Negar Candidatos&quot;&lt;/li&gt;&lt;li&gt;Baixar currículos&lt;/li&gt;&lt;li&gt;Favoritar candidatos para futuras vagas&lt;/li&gt;&lt;li&gt;Gerar relatórios(estatíticas das publicações de vagas)&lt;/li&gt;&lt;/ul&gt;" style="whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+                    <mxGeometry x="270" y="120" width="200" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" style="edgeStyle=none;html=1;fontSize=15;" edge="1" parent="1" source="8">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="620.0000000000002" y="119.99999999999989" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="8" value="&lt;span style=&quot;font-size: 15px;&quot;&gt;ADM&lt;/span&gt;" style="whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="20" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="&lt;ul style=&quot;font-size: 15px;&quot;&gt;&lt;li&gt;Gerenciar Usuários&lt;/li&gt;&lt;li&gt;Gerenciar Vagas&lt;/li&gt;&lt;li&gt;Gerenciar Candidaturas&lt;/li&gt;&lt;li&gt;Gerar Relatórios&lt;/li&gt;&lt;li&gt;Atualizar emails ou cpf (chamado)?&lt;/li&gt;&lt;/ul&gt;" style="whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+                    <mxGeometry x="510" y="120" width="200" height="230" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

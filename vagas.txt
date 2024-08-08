@@ -1,0 +1,107 @@
+Escopo: 
+- Desenvolver uma plataforma online para conectar candidatos a empregos e empresas. Candidatos poderão cadastrar currículos, buscar e se candidatar a vagas, enquanto empresas poderão publicar vagas.
+- Esta solução visa simplificar e otimizar o processo de recrutamento e busca de emprego, oferecendo uma interface intuitiva e funcional para ambos os lados.
+
+Objetivos: 
+- Desenvolver uma plataforma online para conectar candidatos e empresas, permitindo o cadastro e gerenciamento de currículos e vagas de emprego, dentro de um prazo de 5 meses.
+
+Específicos:
+	- Desenvolver e Implementar o Sistema de Cadastro de Usuários e Empresas
+	- Desenvolver Funcionalidades de Gestão de Currículos e Vagas
+	- Criar uma Interface de Usuário Intuitiva e Responsiva
+	- Implementar Sistema de Testes e Garantia de Qualidade
+	- Realizar o Deploy e Lançamento da Plataforma
+Mensuráveis:
+	- Cadastro e Login
+	- Gestão de Currículos e Vagas
+	- Interface de Usuário
+	- Qualidade e Testes
+	- Deploy e Lançamento
+Atingíveis:
+	- Utilizar sistemas de autenticação padrão e bibliotecas confiáveis do Laravel para garantir um sistema seguro e funcional.
+	- Implementar funcionalidades utilizando recursos já existentes e testados do Laravel, garantindo a entrega dentro do prazo.
+	- Utilizar frameworks e bibliotecas front-end para criar uma interface responsiva e intuitiva dentro dos requisitos estabelecidos
+	- Alocar tempo suficiente para testes e correções de bugs, com a colaboração do QA e desenvolvedores para garantir a qualidade.
+	- Utilizar ferramentas e práticas de CI/CD para garantir um deploy eficiente e seguro.
+Relevantes:
+	- Cadastro e Login: Essencial para garantir que candidatos e empresas possam usar a plataforma de forma segura e personalizada.
+	- Interface de Usuário(UX|UI): Crucial para a experiência do usuário. Uma interface amigável aumenta a usabilidade.
+	- Gestão de Currículos e vagas: Fundamental para a funcionalidade principal da plataforma, permitindo que os usuários interajam efetivamente
+	- Testes: Garante que a plataforma funcione conforme o esperado, minimizando problemas.
+	- Deploy: Garantir que a plataforma esteja disponível e funcional para todos os usuários finais.
+Temporais:
+	- Planejamento e Design: Finalizar o desenvolvimento e testes até o final do Mês 1.
+	- Desenvolvimento BackEnd APIs: Completar o desenvolvimento e integração até o final do Mês 2.
+	- Interface de Usuário: Finalizar o design e a implementação até o final do Mês 3.
+	- Integração e Testes: Concluir a fase de testes e ajustes até o final do Mês 4.
+	- Deploy e Lançamento: Configurar o ambiente de produção e realizar o lançamento até o final do Mês 5.
+
+
+Cronograma:
+Mês 1: Planejamento e Design
+ - Definição de Escopo e Objetivos:
+ - Reuniões com "stakeholders(partes interessadas)" para definir escopo, objetivos e requisitos.
+ - Elaboração de documentos de requisitos e planejamento.
+ - Design da Arquitetura e Protótipos
+ - Desenvolvimento da arquitetura do sistema.
+ - Criação de protótipos de média e alta fidelidade.
+ - Definição de tecnologias e planejamento da infraestrutura.
+Mês 2: Desenvolvimento do Back-End
+ - Configuração do Ambiente de desenvolvimento e Funcionalidades Básicas
+ - Implementação de autenticação e gerenciamento de usuários.
+ - Funcionalidades Avançadas do Back-End
+ - Desenvolvimento de APIs para gerenciamento de currículos e vagas.
+ - Integração com o banco de dados
+Mês 3: Desenvolvimento do Front-End
+ - Desenvolvimento das páginas principais (cadastro, login, home).
+ - Criação das telas para visualização e busca de vagas(usuários).
+ - Implementação das páginas de candidatura e gerenciamento de perfil(usuaários).
+ - Desenvolvimento das telas para empresas publicarem e gerenciarem vagas(empresas).
+Mês 4: Integração e Testes
+ - Integração completa entre front-end e back-end.
+ - Realização de testes e correção de bugs.
+ - Condução de testes de usabilidade com usuários reais(feedback).
+ - Coleta de feedback e realização de ajustes.
+Mês 5: Finalização e Lançamento
+ - Implementação de melhorias finais e correção de problemas encontrados.
+ - Preparação de documentação e material de suporte.
+ - Lançamento da aplicação/deploy.
+ - Monitoramento de desempenho e suporte.
+
+
+Recursos:
+- JIRA (Organização)
+- VSCODE (Desenvolvimento)
+- Figma/Adobe
+- Postman
+- GitLab (Testes)
+- Google meet(pro)
+- Docker
+- PostgreSQL
+- Gerente de projetos
+- Desenvolvedor BackEnd(php|laravel) - Pleno
+- Desenvolvedor FrontEnd | Designer - Pleno
+- DBA(Banco de dados) - Pleno
+- QA(Qualidade de software) - Pleno
+- Especialista em SI (Cybersecurity)
+- Estagiário em DEV (Documentação)
+
+Análise de Riscos:
+O projeto pode enfrentar atrasos, mudanças nos requisitos ou problemas imprevistos.
+- Adoção de metodologias ágeis como Scrum e Kanban(adoção de reuniões com alta frequência).
+- Inclusão de um cronograma mais abrangente.
+- Elaboração de plano B, C...
+- Comunicação clara.
+Pode haver problemas técnicos, bugs e falhas que afetam a funcionalidade e a experiência do usuário.
+- Testes contínuos, revisões de código, monitoramento de falhas.
+Vulnerabilidades de segurança podem expor dados sensíveis ou permitir acessos não autorizados.
+- Testes de segurança, atualizações constantes, controle de acesso.
+A plataforma pode enfrentar problemas de desempenho ou escalabilidade à medida que o número de usuários cresce.
+- Testes e otimização de recursos.
+
+Desenvolvimento:
+
+Diagramas de desenvolvimento:
+diagrama de classe(atributos, métodos)
+diagrama de uso(
+diagrama de fluxo(navegações): cliente e empresa
