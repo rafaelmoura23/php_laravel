@@ -1,3 +1,10 @@
+@extends('layouts.app')
+
+@section('content')
+
 <div>
-    <!-- It is never too late to be what you might have been. - George Eliot -->
+    <a href="\login"><h4>Login</h4></a>
+    <a href="\registro"><h4>Registro</h4></a>
 </div>
+
+@endsection
