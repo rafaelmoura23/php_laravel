@@ -32,4 +32,4 @@ Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.log
 // Rota para o dashboard, protegida por autenticação
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware('auth')->name('dashboard');
+})->middleware('auth')->name('usuarios.dashboard');
