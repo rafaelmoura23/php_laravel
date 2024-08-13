@@ -10,7 +10,7 @@ Route::get('/', function () {
 });
 
 // Rota para exibir o formulário de login
-Route::get('/login', [UsuarioController::class, 'showLoginForm'])->name('usuarios.login');
+Route::get('/login', [UsuarioController::class, 'showLoginForm'])->name('login');
 
 
 // Rota para processar o login
@@ -31,5 +31,5 @@ Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.log
 
 // Rota para o dashboard, protegida por autenticação
 Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('usuarios.dashboard');
+    return view('usuarios.dashboard');
+})->middleware('auth')->name('dashboard');
