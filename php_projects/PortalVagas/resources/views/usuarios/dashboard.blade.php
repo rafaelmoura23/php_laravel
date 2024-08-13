@@ -1,3 +1,7 @@
+@extends('layouts.app')
+
+@section('content')
+    
 <div class="container">
     <h3>Dashboard - Usuário</h3>
     <form action="{{route('usuarios.logout')}}" method="post">
@@ -9,3 +13,5 @@
         <span>voce esta logado</span>        
     @endif
 </div>
+
+@endsection
