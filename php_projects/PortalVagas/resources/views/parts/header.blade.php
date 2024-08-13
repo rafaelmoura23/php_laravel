@@ -3,11 +3,13 @@
       <br>
       @if(Auth::check())
           @php
-              $user = request()->user(); // Captura o usuário autenticado
+              $user = request()->user(); 
+              // Captura o usuário autenticado
           @endphp
           <div>
               @if ($user->tipo === 'empresa')
                   Olá Empresa
+                
                   <button>Cadastrar Vaga</button>
               @else
                   Olá Usuário
