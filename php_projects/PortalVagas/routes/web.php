@@ -1,11 +1,10 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Models\Vaga;
 use App\Http\Controllers\VagaController;
-
+use App\Http\Middleware\VagaMiddleware;
 
 Route::get('/', function () {
     return view('home');
@@ -36,5 +35,4 @@ Route::get('/dashboard', function () {
     return view('usuarios.dashboard');
 })->middleware('auth')->name('dashboard');
 
-Route::resource('/vagas', VagaController::class)
-    ->middleware('auth');
+Route::resource('/vagas', VagaController::class)->middleware(VagaMiddleware::class);
