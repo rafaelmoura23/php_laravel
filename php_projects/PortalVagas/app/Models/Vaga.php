@@ -13,15 +13,8 @@ class Vaga extends Model
 
 
     protected $fillable = [
-        'titulo', 'descricao', 'localizacao', 'salario', 'empresa_id',
+        'titulo', 'descricao', 'localizacao', 'salario', 'empresa',
     ];
-
-
-    public function empresa()
-    {
-        return $this->belongsTo(Empresa::class);
-    }
-
 
     public function inscricoes()
     {
