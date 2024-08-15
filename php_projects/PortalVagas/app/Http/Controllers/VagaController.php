@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vaga;
+use Illuminate\Support\Facades\Auth;
 
 class VagaController extends Controller
 {
@@ -12,8 +13,12 @@ class VagaController extends Controller
      */
     public function index()
     {
-        $vagas = Vaga::all();
-        return view('vagas.index' , compact('vagas'));
+        // $vagas = Vaga::all();
+        // return view('vagas.index' , compact('vagas'));
+        // Obter o usuário autenticado
+    $usuario = Auth::user();
+    $vagas = Vaga::where('empresa', $usuario->nome_empresa)->get();
+    return view('vagas.index', compact('vagas'));
     }
 
     /**

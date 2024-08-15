@@ -20,5 +20,6 @@ class Vaga extends Model
     {
         return $this->hasMany(Inscricao::class);
     }
+
 }
 
