@@ -13,7 +13,7 @@ class VagaController extends Controller
     public function index()
     {
         $vagas = Vaga::all();
-        return view('vagas.index' . compact('vagas'));
+        return view('vagas.index' , compact('vagas'));
     }
 
     /**
