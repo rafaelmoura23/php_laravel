@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        
         $search = $request->input('search');
         $vagas = Vaga::when($search, function ($query, $search){
             return $query ->where('titulo', 'like', "%{$search}%")

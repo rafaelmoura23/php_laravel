@@ -6,7 +6,9 @@ use App\Http\Controllers\UsuarioController;
 use App\Models\Vaga;
 use App\Http\Controllers\VagaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InscricaoController;
 use App\Http\Middleware\VagaMiddleware;
+use App\Models\Inscricao;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -33,4 +35,9 @@ Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.log
 // Rota para o dashboard, protegida por autenticação
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
-Route::resource('/vagas', VagaController::class)->middleware(VagaMiddleware::class);
+Route::resource('/vagas', VagaController::class)->middleware(VagaMiddleware::class)->except('show');
+
+Route::get('vagas/{vaga}', [VagaController::class, 'show'])->middleware('auth')->name('vagas.show');
+
+Route::post('inscricao/add/{vaga}', [InscricaoController::class, 'add'])
+->middleware('auth')->name('inscricao.add');
