@@ -1,42 +1,32 @@
-@if (Auth::check())
-    @if (Auth::user()->isEmpresa())
-        <div>
-            <a href="/vagas">Acesse o Dashboard de Vagas</a>
-        </div>
-    @endif
-    <hr>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <div class="row">
-            <div class="col text-center">
-                <h3>Seja bem-vindo, {{ Auth::user()->nome }}</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col text-center">
-                <form action="/logout" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-danger">Logout</button>
-                </form>
+        <a class="navbar-brand" href="/">SeuLogo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                @if (Auth::check())
+                    <div class="d-flex align-items-center">
+                        @if (Auth::user()->isEmpresa())
+                            <a href="/vagas" class="btn btn-primary me-2">Dashboard de Vagas</a>
+                        @endif
+                        <span class="me-3">Bem-vindo, {{ Auth::user()->nome }}</span>
+                        <form action="/logout" method="post" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">Logout</button>
+                        </form>
+                    </div>
+                @else
+                    <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="/registro" class="btn btn-warning">Sign-up</a>
+                @endif
             </div>
         </div>
     </div>
-    <hr>
-@else
-    <hr>
-    <div class="container">
-        <div class="row justify-content-end">
-            <div class="col-auto">
-                <a href="/login" class="btn btn-outline me-2">Login</a>
-                <a href="/registro" class="btn btn-warning">Sign-up</a>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <ul class="nav">
-                    <li class="nav-item"><a href="/" class="nav-link text-secondary">Home</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <hr>
-@endif
+</nav>

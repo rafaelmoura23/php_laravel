@@ -1,14 +1,14 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
 use App\Models\Vaga;
 use App\Http\Controllers\VagaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\VagaMiddleware;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Rota para exibir o formulário de login
 Route::get('/login', [UsuarioController::class, 'showLoginForm'])->name('login');
@@ -31,8 +31,6 @@ Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.log
 
 
 // Rota para o dashboard, protegida por autenticação
-Route::get('/dashboard', function () {
-    return view('usuarios.dashboard');
-})->middleware('auth')->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 Route::resource('/vagas', VagaController::class)->middleware(VagaMiddleware::class);

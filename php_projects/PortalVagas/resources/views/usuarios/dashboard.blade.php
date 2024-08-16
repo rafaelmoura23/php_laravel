@@ -1,17 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-    
-<div class="container">
-    <h3>Dashboard - Usuário</h3>
-    <form action="{{route('usuarios.logout')}}" method="post">
-        @csrf
-        <input type="submit" value="sair">
+    <h1>Dashboard de Vagas</h1>
+
+    <form method="GET" action="{{ route('dashboard') }}">
+        <input type="text" name="search" placeholder="Pesquisar vagas..." value="{{ request('search') }}">
+        <button type="submit">Pesquisar</button>
     </form>
 
-    @if(Auth::check())
-        <span>voce esta logado</span>        
-    @endif
-</div>
-
+    <div class="row">
+        @foreach ($vagas as $vaga)
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="/assets/img/img1.png" class="card-img-top" alt="{{ $vaga->titulo }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $vaga->titulo }}</h5>
+                        <h5 class="card-title">{{ $vaga->empresa }}</h5>
+                        <p class="card-text">{{ $vaga->descricao }}</p>
+                        <p class="card-text">Local: {{ $vaga->localizacao }}</p>
+                        <p class="card-text">Preço: R$ {{ $vaga->salario }}</p>
+                        <a href="{{ route('vagas.show', $vaga->id) }}" class="btn btn-primary">Ver Vaga</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
 @endsection
