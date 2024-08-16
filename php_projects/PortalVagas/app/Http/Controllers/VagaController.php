@@ -16,9 +16,10 @@ class VagaController extends Controller
         // $vagas = Vaga::all();
         // return view('vagas.index' , compact('vagas'));
         // Obter o usuário autenticado
-    $usuario = Auth::user();
-    $vagas = Vaga::where('empresa', $usuario->nome_empresa)->get();
-    return view('vagas.index', compact('vagas'));
+        $usuario = Auth::user()->nome_empresa;
+        $vagas = Vaga::where('empresa', $usuario)->get();
+        // $vagas = Vaga::when(Auth::user()->nome_empresa);
+        return view('vagas.index', compact('vagas'));
     }
 
     /**
