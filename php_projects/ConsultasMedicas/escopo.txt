@@ -1,0 +1,82 @@
+Models:
+- Usuario(paciente)(usuario)
+- Medico(empresa)
+- Agendamento(inscricao)
+- Consulta(vaga)
+
+- empresa cria vaga
+- medico cria consultas(horários)
+
+
+cadastro de usuario e medico(especialidade, CRM do medico)
+medico cria seu horario, especialidade
+paciente consulta e agenda
+criacao de agenda na pagina interna dos médicos
+
+
+Usuario:
+- nome
+- email
+- data_nascimento
+- telefone
+- endereco
+- plano_saude
+- tipo
+- password
+- rg_usuario == USUARIO ==
+- crm_medico == MEDICO ==
+- especialidade == MEDICO ==
+== RELACOES==
+- Agendamentos
+- isUsuario
+- isMedico
+
+Consulta:
+- horarios
+- duracao
+- tipo_consulta(online, presencial)
+- valor
+- disponibilidade
+- nome_medico(pegar pelo crm)
+
+Agendamento
+- rg_usuario
+- crm_medico
+- id_consulta
+- status
+
+
+1. Campo de Pesquisa por horário e especialidade(aparecer apenas do plano de saúde)
+2. Ao pesquisar aparece médicos especificos
+3. Ao clicar no médico aparece os horários/valor...
+4. Ao escolher o horário e clicar em agendar, salva a consulta no banco de dados e retira
+o horário marcado da agenda do médico
+
+
+==== Passo a Passo - Projeto: ====
+Criação do projeto: 
+- composer create laravel/laravel ConsultasMedicas --prefer-dist
+
+Criação banco de dados:
+- Create database consultas_medicas
+
+Edição .env:
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=consultas_medicas
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+
+Criação dos models:
+- php artisan make:model Usuario -m
+- php artisan make:model Consulta -m
+- php artisan make:model Agendamento -m
+rodar: php artisan migrate(realizar alterações/criações das tabelas no banco de dado)
+
+Editar os arquivos do banco de dados
+Rodar php artisam migrate
+
+
+
+
