@@ -83,8 +83,6 @@ class UsuarioController extends Controller
     }
 
 
-
-
     // Realizar o logout do usuário
     public function logout(Request $request)
     {

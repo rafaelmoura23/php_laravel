@@ -13,6 +13,20 @@ medico cria seu horario, especialidade
 paciente consulta e agenda
 criacao de agenda na pagina interna dos médicos
 
+======
+Usuario => Agendar Consulta
+		=> Pesquisar médicos por especialidade, valor, horario
+			=> Aparecer todos os médicos disponíveis
+				=> Selecionar médico
+					=> Ver os horários disponíveis
+						=> Selecionar um horário
+							=> Cadastrar no banco de consulta_agendada
+								=> cadastrar usuario_id, agendamento_id, status
+Medico => Agendamentos(Seleção de horários)
+		=> Seleciona os horários disponíveis, preço, modalidade(presencial...),
+======
+
+Criar cards de médicos(foto?)
 
 Usuario:
 - nome
@@ -31,26 +45,34 @@ Usuario:
 - isUsuario
 - isMedico
 
-Consulta:
-- horarios
+Agendamento:
+- horario
 - duracao
 - tipo_consulta(online, presencial)
 - valor
-- disponibilidade
 - nome_medico(pegar pelo crm)
 
-Agendamento
+Consulta:
 - rg_usuario
 - crm_medico
 - id_consulta
 - status
 
 
+
+========
+MEDICO CRIA AGENDAMENTO
+USUARIO CRIA CONSULTA DE ACORDO COM O AGENDAMENTO
+CONSULTA
+========
+
 1. Campo de Pesquisa por horário e especialidade(aparecer apenas do plano de saúde)
 2. Ao pesquisar aparece médicos especificos
 3. Ao clicar no médico aparece os horários/valor...
 4. Ao escolher o horário e clicar em agendar, salva a consulta no banco de dados e retira
 o horário marcado da agenda do médico
+
+
 
 
 ==== Passo a Passo - Projeto: ====
@@ -76,6 +98,33 @@ rodar: php artisan migrate(realizar alterações/criações das tabelas no banco
 
 Editar os arquivos do banco de dados
 Rodar php artisam migrate
+
+Criação do Controller para Usuario:
+- php artisan make:controller UsuarioController
+
+Definir as rotas em routes/web.php
+
+Criar o layouts.app
+- php artisan make:view layouts.app
+
+Criar Header e Footer:
+- php artisan make:view parts.header
+- php artisan make:view parts.footer
+
+
+Criar View:
+- php artisan make:view usuarios.registro
+- php artisan make:view usuarios.login
+- php artisan make:view usuarios.dashboard
+
+Criar a Home:
+- php artisan make:view home
+
+Criar HomeController
+- php artisan make:controller HomeController
+
+Criar DashboardController
+- php artisan make:controller DashboardController
 
 
 

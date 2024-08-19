@@ -33,6 +33,6 @@ Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.log
 
 
 // Rota para o dashboard, protegida por autenticação
-// Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 // Route::resource('/vagas', VagaController::class)->middleware(VagaMiddleware::class)->except('show');

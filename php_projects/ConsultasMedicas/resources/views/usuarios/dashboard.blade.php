@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+@section('content')
 <div>
-    <!-- People find pleasure in different ways. I find it in keeping my mind clear. - Marcus Aurelius -->
+    Olá usuarios logado
 </div>
+
+@endsection
