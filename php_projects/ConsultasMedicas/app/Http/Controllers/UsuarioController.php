@@ -105,10 +105,10 @@ class UsuarioController extends Controller
         return view('usuarios.medicos', ['medicos' => $medicos]);
     }
 
+    // app/Http/Controllers/UsuarioController.php
     public function show($id)
     {
-        $medico = Usuario::findOrFail($id);
+        $medico = Usuario::with('agendamentos')->findOrFail($id);
         return view('usuarios.show', ['medico' => $medico]);
     }
-    
 }

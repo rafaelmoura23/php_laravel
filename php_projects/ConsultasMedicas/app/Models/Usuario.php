@@ -33,9 +33,9 @@ class Usuario extends Authenticatable
 
     // Relação com AGENDAMENTOS criado
     public function agendamentos()
-    {
-        return $this->hasMany(Agendamento::class);
-    }
+{
+    return $this->hasMany(Agendamento::class, 'crm_medico', 'crm_medico');
+}
 
     // === USUARIO ===
     public function isUsuario()

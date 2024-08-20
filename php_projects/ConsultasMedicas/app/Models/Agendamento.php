@@ -26,8 +26,12 @@ class Agendamento extends Model
     }
 
     public function usuario()
-{
-    return $this->belongsTo(Usuario::class);
-}
-
+    {
+        return $this->belongsTo(Usuario::class);
+    }
+    // app/Models/Agendamento.php
+    public function medico()
+    {
+        return $this->belongsTo(Usuario::class, 'crm_medico', 'crm_medico');
+    }
 }
