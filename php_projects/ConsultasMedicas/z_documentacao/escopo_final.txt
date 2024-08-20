@@ -1,0 +1,108 @@
+Escopo:
+Desenvolver uma plataforma online para conectar médicos e pacientes. Médicos poderão se cadastrar, cadastrar horários disponíveis para consultas, definir preços e modalidades, enquanto pacientes poderão se cadastrar , buscar médicos, visualizar horários e agendar consultas.
+Esta solução visa simplificar e otimizar o processo de agendamento de consultas, oferecendo uma interface intuitiva e funcional para ambos os lados.
+
+Objetivos:
+Desenvolver uma plataforma online para conectar médicos e pacientes, permitindo o cadastro e gerenciamento de horários e consultas, dentro de um prazo de 5 meses.
+
+Específicos:
+Desenvolver e Implementar o Sistema de Cadastro de Usuários e Médicos.
+Desenvolver Funcionalidades de Gestão de Horários e Agendamentos.
+Criar uma Interface de Usuário Intuitiva e Responsiva.
+Implementar Sistema de Testes e Garantia de Qualidade.
+Realizar o Deploy e Lançamento da Plataforma.
+
+Mensuráveis:
+Cadastro e Login.
+Gestão de Horários e Consultas.
+Interface de Usuário.
+Qualidade e Testes.
+Deploy e Lançamento.
+
+Atingíveis:
+Utilizar sistemas de autenticação padrão e bibliotecas confiáveis do Laravel para garantir um sistema seguro e funcional.
+Implementar funcionalidades utilizando recursos já existentes e testados do Laravel, garantindo a entrega dentro do prazo.
+Utilizar frameworks e bibliotecas front-end para criar uma interface responsiva e intuitiva dentro dos requisitos estabelecidos.
+Alocar tempo suficiente para testes e correções de bugs, com a colaboração do QA e desenvolvedores para garantir a qualidade.
+Utilizar ferramentas e práticas de CI/CD para garantir um deploy eficiente e seguro.
+
+Relevantes:
+Cadastro e Login: Essencial para garantir que médicos e pacientes possam usar a plataforma de forma segura e personalizada.
+Interface de Usuário (UX/UI): Crucial para a experiência do usuário. Uma interface amigável aumenta a usabilidade.
+Gestão de Horários e Consultas: Fundamental para a funcionalidade principal da plataforma, permitindo que os usuários interajam efetivamente.
+Testes: Garante que a plataforma funcione conforme o esperado, minimizando problemas.
+Deploy: Garantir que a plataforma esteja disponível e funcional para todos os usuários finais.
+
+Temporais:
+Planejamento e Design: Finalizar o desenvolvimento e testes até o final do Mês 1.
+Desenvolvimento Back-End: Completar o desenvolvimento e integração até o final do Mês 2.
+Interface de Usuário: Finalizar o design e a implementação até o final do Mês 3.
+Integração e Testes: Concluir a fase de testes e ajustes até o final do Mês 4.
+Deploy e Lançamento: Configurar o ambiente de produção e realizar o lançamento até o final do Mês 5.
+
+Cronograma:
+Mês 1: Planejamento e Design
+Definição de Escopo e Objetivos:
+Reuniões com stakeholders para definir escopo, objetivos e requisitos.
+Elaboração de documentos de requisitos e planejamento.
+Design da Arquitetura e Protótipos:
+Desenvolvimento da arquitetura do sistema.
+Criação de protótipos de média e alta fidelidade.
+Definição de tecnologias e planejamento da infraestrutura.
+
+Mês 2: Desenvolvimento do Back-End
+Configuração do Ambiente de Desenvolvimento e Funcionalidades Básicas:
+Implementação de autenticação e gerenciamento de usuários.
+Funcionalidades Avançadas do Back-End:
+Desenvolvimento de APIs para gerenciamento de horários e consultas.
+Integração com o banco de dados.
+
+Mês 3: Desenvolvimento do Front-End
+Desenvolvimento das Páginas Principais (cadastro, login, home).
+Criação das Telas para Visualização e Busca de Médicos (pacientes).
+Implementação das Páginas de Agendamento de Consultas (pacientes).
+Desenvolvimento das Telas para Médicos Publicarem e Gerenciarem Horários (médicos).
+
+Mês 4: Integração e Testes
+Integração Completa entre Front-End e Back-End.
+Realização de Testes e Correção de Bugs.
+Condução de Testes de Usabilidade com Usuários Reais (feedback).
+Coleta de Feedback e Realização de Ajustes.
+
+Mês 5: Finalização e Lançamento
+Implementação de Melhorias Finais e Correção de Problemas Encontrados.
+Preparação de Documentação e Material de Suporte.
+Lançamento da Aplicação/Deploy.
+Monitoramento de Desempenho e Suporte.
+
+Recursos:
+JIRA (Organização).
+VSCode (Desenvolvimento).
+Figma/Adobe (Design).
+Postman (Testes de API).
+GitLab (Controle de Versão e CI/CD).
+Google Meet (Pro) (Comunicação).
+PostgreSQL (Banco de Dados).
+Gerente de Projetos.
+Desenvolvedor Back-End (PHP/Laravel) - Pleno.
+Desenvolvedor Front-End / Designer - Pleno.
+DBA (Banco de Dados) - Pleno.
+QA (Qualidade de Software) - Pleno.
+Especialista em SI (Cybersecurity).
+Estagiário em DEV (Documentação).
+
+Análise de Riscos:
+O projeto pode enfrentar atrasos, mudanças nos requisitos ou problemas imprevistos.
+Adoção de metodologias ágeis como Scrum e Kanban, com reuniões frequentes.
+Inclusão de um cronograma mais abrangente.
+Elaboração de plano B, C...
+Comunicação clara.
+
+Pode haver problemas técnicos, bugs e falhas que afetam a funcionalidade e a experiência do usuário.
+Testes contínuos, revisões de código, monitoramento de falhas.
+
+Vulnerabilidades de segurança podem expor dados sensíveis ou permitir acessos não autorizados.
+Testes de segurança, atualizações constantes, controle de acesso.
+
+A plataforma pode enfrentar problemas de desempenho ou escalabilidade à medida que o número de usuários cresce.
+Testes e otimização de recursos.
