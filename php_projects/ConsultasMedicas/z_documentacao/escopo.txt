@@ -126,6 +126,12 @@ Criar HomeController
 Criar DashboardController
 - php artisan make:controller DashboardController
 
+Criar AgendamentoController
+- php artisan make:controller AgendamentoController
+
+Criar AgendamentoViews
+- php artisan make:view agendamentos.create
+- php artisan make:view agendamentos.edit
 
 
 OBSERVAÇÕES:

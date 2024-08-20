@@ -6,8 +6,10 @@ use App\Http\Controllers\UsuarioController;
 use App\Models\Vaga;
 use App\Http\Controllers\VagaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AgendamentoController;
 use App\Http\Controllers\InscricaoController;
 use App\Http\Middleware\VagaMiddleware;
+use App\Models\Agendamento;
 use App\Models\Inscricao;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,8 +33,10 @@ Route::post('/registro', [UsuarioController::class, 'registro'])->name('usuarios
 // Rota para logout
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.logout');
 
-
 // Rota para o dashboard, protegida por autenticação
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+
+// Rota para agendamentos
+Route::resource('/agendamentos', AgendamentoController::class)->except('show');
 
 // Route::resource('/vagas', VagaController::class)->middleware(VagaMiddleware::class)->except('show');

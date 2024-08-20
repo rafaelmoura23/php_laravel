@@ -14,7 +14,8 @@
                 @if (Auth::check())
                     <div class="d-flex align-items-center">
                         @if (Auth::user()->isMedico())
-                            <a href="/vagas" class="btn btn-primary me-2">Agendamento(médico)</a>
+                            <a href="/agendamentos" class="btn btn-primary me-2">Agendamento</a>
+                            <a href="/agendamentos" class="btn btn-secondary me-2">Consultas Marcadas</a>
                         @endif
                         <span class="me-3">Bem-vindo, {{ Auth::user()->nome }}</span>
                         <form action="/logout" method="post" class="d-inline">

@@ -13,13 +13,15 @@ class Vaga extends Model
 
 
     protected $fillable = [
-        'titulo', 'descricao', 'localizacao', 'salario', 'empresa',
+        'titulo',
+        'descricao',
+        'localizacao',
+        'salario',
+        'empresa',
     ];
 
     public function inscricoes()
     {
         return $this->hasMany(Inscricao::class);
     }
-
 }
-
