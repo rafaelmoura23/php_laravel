@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Agendamento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgendamentoController extends Controller
 {
     // Exibe uma lista de agendamentos
     public function index()
     {
-        $agendamentos = Agendamento::all();
+        $medico = Auth::user()->crm_medico;
+        $agendamentos = Agendamento::where('crm_medico', $medico)->get();
         return view('agendamentos.index', compact('agendamentos'));
     }
 

@@ -24,4 +24,10 @@ class Agendamento extends Model
     {
         return $this->hasMany(Consulta::class);
     }
+
+    public function usuario()
+{
+    return $this->belongsTo(Usuario::class);
+}
+
 }

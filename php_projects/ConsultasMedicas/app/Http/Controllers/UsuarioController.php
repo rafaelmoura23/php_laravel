@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Usuario;
+use App\Models\Agendamento;
 
 class UsuarioController extends Controller
 {
@@ -94,4 +95,20 @@ class UsuarioController extends Controller
 
         return redirect('/');
     }
+
+    public function listarMedicos()
+    {
+        // Buscar todos os usuários que são médicos
+        $medicos = Usuario::where('tipo', 'medico')->get();
+
+        // Retornar a view com a lista de médicos
+        return view('usuarios.medicos', ['medicos' => $medicos]);
+    }
+
+    public function show($id)
+    {
+        $medico = Usuario::findOrFail($id);
+        return view('usuarios.show', ['medico' => $medico]);
+    }
+    
 }

@@ -130,8 +130,12 @@ Criar AgendamentoController
 - php artisan make:controller AgendamentoController
 
 Criar AgendamentoViews
+- php artisan make:view agendamentos.index
 - php artisan make:view agendamentos.create
 - php artisan make:view agendamentos.edit
+
+Criar MedicosView e Controller
+- php artisan make
 
 
 OBSERVAÇÕES:

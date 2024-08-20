@@ -48,4 +48,5 @@ class Usuario extends Authenticatable
     {
         return $this->tipo === 'medico';
     }
+
 }
