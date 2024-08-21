@@ -28,8 +28,7 @@ class ConsultaController extends Controller
             'horario' => 'required|string',
             'crm' => 'required|string',
             'rg_usuario' => 'required|string',
-            'observacoes' => 'nullable|string',
-            'id_agendamento' => 'required|integer',
+            'observacoes' => 'nullable|string'
         ]);
 
         // Cria uma nova consulta
@@ -39,16 +38,10 @@ class ConsultaController extends Controller
         $consulta->crm_medico = $request->input('crm');
         $consulta->rg_usuario = $request->input('rg_usuario');
         $consulta->observacoes = $request->input('observacoes');
-        $consulta->id_agendamento = $request->input('id_agendamento');
         $consulta->status = 'agendada'; // Defina o status conforme necessário
         $consulta->save();
 
         // Atualiza o status do horário na tabela agendamentos
-        $agendamento = Agendamento::find($request->input('id_agendamento'));
-        if ($agendamento) {
-            $agendamento->status = 'indisponível'; // Ou outro valor para indicar indisponibilidade
-            $agendamento->save();
-        }
 
         return redirect()->route('home')->with('message', 'Consulta agendada com sucesso!');
     }

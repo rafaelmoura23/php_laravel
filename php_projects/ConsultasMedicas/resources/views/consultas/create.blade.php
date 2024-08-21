@@ -31,7 +31,7 @@
             <textarea class="form-control" id="observacoes" name="observacoes"></textarea>
         </div>
 
-        <input type="hidden" name="id_agendamento" value="{{ $id_agendamento }}">
+        {{-- <input type="hidden" name="id_agendamento" value="{{ $id_agendamento }}"> --}}
 
         <button type="submit" class="btn btn-primary">Agendar</button>
     </form>

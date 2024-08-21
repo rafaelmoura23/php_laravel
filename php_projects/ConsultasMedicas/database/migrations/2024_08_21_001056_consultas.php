@@ -15,13 +15,15 @@ return new class extends Migration
             $table->id(); // Primary key
 
             // Se crm_medico é uma referência à tabela de médicos, altere 'usuarios' para 'medicos'
-            $table->foreignId('crm_medico')->constrained('usuarios')->onDelete('cascade'); 
+            $table->string('crm_medico'); // Cria a coluna crm_medico como string
+            $table->foreign('crm_medico')->references('crm_medico')->on('usuarios')->onDelete('cascade');
 
-            // Se id_agendamento é uma referência à tabela de agendamentos
-            $table->foreignId('id_agendamento')->constrained('agendamentos')->onDelete('cascade');
+            // // Se id_agendamento é uma referência à tabela de agendamentos
+            // $table->foreignId('id_agendamento')->constrained('agendamentos')->onDelete('cascade');
 
             // Se rg_usuario é uma referência à tabela de usuários
-            $table->foreignId('rg_usuario')->constrained('usuarios')->onDelete('cascade'); 
+            $table->string('rg_usuario'); // Cria a coluna crm_medico como string
+            $table->foreign('rg_usuario')->references('rg_usuario')->on('usuarios')->onDelete('cascade');
 
             // Se você quer armazenar a data e a hora juntos, continue com dateTime
             $table->date('data'); // Usar date apenas para data

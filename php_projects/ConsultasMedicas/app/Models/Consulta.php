@@ -11,7 +11,6 @@ class Consulta extends Model
 
     protected $fillable = [
         'crm_medico',
-        'id_agendamento',
         'rg_usuario',
         'data',
         'status',

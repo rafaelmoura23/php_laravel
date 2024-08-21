@@ -114,61 +114,88 @@ class UsuarioController extends Controller
 
 
 
-    // Exemplo de como seria no controller
     public function show($id)
-{
-    $medico = Usuario::findOrFail($id);
+    {
+        $medico = Usuario::findOrFail($id);
     
-    // Recupera os agendamentos e agrupa por mês
-    $agendamentos = $medico->agendamentos->groupBy(function($date) {
-        return $date->mes;
-    });
-
-    $calendarios = [];
+        // Recupera os agendamentos e agrupa por mês
+        $agendamentos = $medico->agendamentos->groupBy(function($date) {
+            return \Carbon\Carbon::parse($date->data)->format('Y-m');
+        });
     
-    foreach ($agendamentos as $mesAno => $agendamentosMes) {
-        $calendarios[$mesAno] = [
-            'mesAno' => \Carbon\Carbon::createFromFormat('Y-m', $mesAno),
-            'agendamentos' => $agendamentosMes
-        ];
+        $calendarios = [];
+    
+        foreach ($agendamentos as $mesAno => $agendamentosMes) {
+            // Certifique-se de que todos os meses disponíveis estão sendo processados
+            $calendarios[$mesAno] = [
+                'mesAno' => \Carbon\Carbon::createFromFormat('Y-m', $mesAno),
+                'dias' => $this->getDiasDoMes($mesAno),
+                'horarios' => $this->getHorariosPorDia($agendamentosMes, $mesAno)
+            ];
+        }
+    
+        return view('usuarios.show', [
+            'medico' => $medico,
+            'calendarios' => $calendarios
+        ]);
     }
     
-    // Adiciona lógica para gerar dias e horários
-    foreach ($calendarios as &$calendario) {
-        $diasMes = collect();
-        $mesAno = $calendario['mesAno'];
-
-        for ($day = 1; $day <= $mesAno->daysInMonth; $day++) {
-            $diasMes->push($mesAno->copy()->day($day));
+    /**
+     * Gera todos os dias do mês para um mês específico
+     *
+     * @param string $mesAno
+     * @return \Illuminate\Support\Collection
+     */
+    private function getDiasDoMes($mesAno)
+    {
+        $mesAnoObj = \Carbon\Carbon::createFromFormat('Y-m', $mesAno);
+        $dias = collect();
+    
+        for ($day = 1; $day <= $mesAnoObj->daysInMonth; $day++) {
+            $dias->push($mesAnoObj->copy()->day($day));
         }
-
-        $calendario['dias'] = $diasMes;
-        $calendario['horarios'] = [];
-
-        foreach ($diasMes as $dia) {
-            $turno = $calendario['agendamentos']->where('mes', $dia->format('Y-m'))->first()->turno ?? null;
-
-            if ($turno) {
-                $horarios = [];
-                if ($turno == 'manhã') {
-                    for ($hora = 8; $hora < 12; $hora += 0.5) {
-                        $horarios[] = sprintf('%02d:%02d', floor($hora), ($hora - floor($hora)) * 60);
-                    }
-                } elseif ($turno == 'tarde') {
-                    for ($hora = 14; $hora < 18; $hora += 0.5) {
-                        $horarios[] = sprintf('%02d:%02d', floor($hora), ($hora - floor($hora)) * 60);
-                    }
-                }
-                $calendario['horarios'][$dia->format('Y-m-d')] = $horarios;
+    
+        return $dias;
+    }
+    
+    /**
+     * Gera horários disponíveis para cada dia, baseado no turno
+     *
+     * @param \Illuminate\Support\Collection $agendamentos
+     * @param string $mesAno
+     * @return array
+     */
+    private function getHorariosPorDia($agendamentos, $mesAno)
+    {
+        $dias = $this->getDiasDoMes($mesAno);
+        $horarios = [];
+    
+        foreach ($dias as $dia) {
+            // Teste: Gerar horários fixos para todos os dias
+            $horarios[$dia->format('Y-m-d')] = $this->generateHorarios('manhã');
+        }
+    
+        return $horarios;
+    }
+    
+    /**
+     * Gera horários com base no turno
+     *
+     * @param string $turno
+     * @return array
+     */
+    private function generateHorarios($turno)
+    {
+        $horarios = [];
+        if ($turno == 'manhã') {
+            for ($hora = 8; $hora < 12; $hora += 0.5) {
+                $horarios[] = sprintf('%02d:%02d', floor($hora), ($hora - floor($hora)) * 60);
+            }
+        } elseif ($turno == 'tarde') {
+            for ($hora = 14; $hora < 18; $hora += 0.5) {
+                $horarios[] = sprintf('%02d:%02d', floor($hora), ($hora - floor($hora)) * 60);
             }
         }
+        return $horarios;
     }
-
-    return view('usuarios.show', [
-        'medico' => $medico,
-        'calendarios' => $calendarios
-    ]);
-}
-
-
-}
+}    
