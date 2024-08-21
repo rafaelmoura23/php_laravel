@@ -10,11 +10,12 @@ class Consulta extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_medico',
+        'crm_medico',
         'id_agendamento',
-        'id_usuario',
+        'rg_usuario',
         'data',
         'status',
+        'horario',
         'observacoes'
     ];
 }

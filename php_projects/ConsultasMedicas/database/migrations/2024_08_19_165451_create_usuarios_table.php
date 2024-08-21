@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('telefone');
             $table->string('endereco');
             $table->string('plano_saude');
-            $table->string('rg_usuario')->nullable(); // Usuário
-            $table->string('crm_medico')->nullable(); // Médico
+            $table->string('rg_usuario')->nullable()->unique(); // Usuário
+            $table->string('crm_medico')->nullable()->unique(); // Médico
             $table->string('especialidade')->nullable(); // Médico
             $table->enum('tipo', ['usuario', 'medico'])->default('usuario');
             $table->rememberToken();

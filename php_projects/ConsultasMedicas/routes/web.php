@@ -10,6 +10,7 @@ use App\Http\Controllers\AgendamentoController;
 use App\Http\Controllers\InscricaoController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Middleware\AgendamentoMiddleware;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Middleware\VagaMiddleware;
 use App\Models\Agendamento;
@@ -36,14 +37,20 @@ Route::post('/registro', [UsuarioController::class, 'registro'])->name('usuarios
 // Rota para logout
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.logout');
 
-Route::post('/buscar', [UsuarioController::class, 'buscar'])->name('usuarios.buscar');
-
 // Rota para o dashboard, protegida por autenticação
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 // Rota para agendamentos
 Route::resource('/agendamentos', AgendamentoController::class)->middleware(AgendamentoMiddleware::class)->except('show');
 
+// Rota para lista dos médicos cadastrados
 Route::get('/medicos', [UsuarioController::class, 'listarMedicos'])->name('medicos.index');
 
+// Rota para ver os horários dos médicos
 Route::get('usuarios/{id}', [UsuarioController::class, 'show'])->name('usuarios.show');
+
+
+Route::get('/consulta/create', [ConsultaController::class, 'create'])->name('consulta.create');
+
+
+Route::post('/consulta/store', [ConsultaController::class, 'store'])->name('consulta.store');

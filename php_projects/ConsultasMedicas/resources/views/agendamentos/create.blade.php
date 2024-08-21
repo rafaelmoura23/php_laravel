@@ -21,8 +21,8 @@
             <div class="mb-3">
                 <label for="turno" class="form-label">Turno</label>
                 <select name="turno" id="turno" class="form-control">
-                    <option value="manhã">Manhã</option>
-                    <option value="tarde">Tarde</option>
+                    <option value="Manhã">Manhã</option>
+                    <option value="Tarde">Tarde</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -35,7 +35,7 @@
             </div>
             <div class="mb-3">
                 <label for="endereco_consultorio" class="form-label">Endereço do Consultório</label>
-                <input type="text" name="endereco_consultorio" class="form-control" id="endereco_consultorio">
+                <input type="text" name="endereco_consultorio" class="form-control" id="endereco_consultorio" value="{{ auth()->user()->endereco }}">
             </div>
             <div class="mb-3">
                 <label for="preco" class="form-label">Preço</label>
