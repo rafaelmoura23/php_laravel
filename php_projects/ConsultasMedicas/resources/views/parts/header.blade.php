@@ -18,7 +18,7 @@
                             <a href="/agendamentos" class="btn btn-secondary me-2">Consultas Marcadas</a>
                         @endif
                         @if (Auth::user()->isUsuario())
-                            <a href="/agendamentos" class="btn btn-primary me-2">Marcar Consulta</a>
+                            <a href="/medicos" class="btn btn-primary me-2">Médicos</a>
                         @endif
                         <span class="me-3">Bem-vindo, {{ Auth::user()->nome }}</span>
                         <form action="/logout" method="post" class="d-inline">

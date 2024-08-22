@@ -17,4 +17,14 @@ class Consulta extends Model
         'horario',
         'observacoes'
     ];
+
+    public function medico()
+    {
+        return $this->belongsTo(Usuario::class, 'crm_medico', 'crm_medico');
+    }
+
+    public function paciente()
+    {
+        return $this->belongsTo(Usuario::class, 'rg_usuario', 'rg_usuario');
+    }
 }

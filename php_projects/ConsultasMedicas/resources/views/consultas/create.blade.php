@@ -23,7 +23,7 @@
 
         <div class="form-group">
             <label for="rg_usuario">RG do Usuário:</label>
-            <input type="text" class="form-control" id="rg_usuario" name="rg_usuario" required>
+            <input type="text" class="form-control" id="rg_usuario" name="rg_usuario" value="{{ auth()->user()->rg_usuario }}" readonly>
         </div>
 
         <div class="form-group">

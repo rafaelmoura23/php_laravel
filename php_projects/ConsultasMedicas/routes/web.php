@@ -3,18 +3,10 @@
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
-use App\Models\Vaga;
-use App\Http\Controllers\VagaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AgendamentoController;
-use App\Http\Controllers\InscricaoController;
-use App\Http\Controllers\MedicoController;
 use App\Http\Middleware\AgendamentoMiddleware;
 use App\Http\Controllers\ConsultaController;
-use App\Http\Controllers\HorarioController;
-use App\Http\Middleware\VagaMiddleware;
-use App\Models\Agendamento;
-use App\Models\Inscricao;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -41,16 +33,28 @@ Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.log
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 
 // Rota para agendamentos
-Route::resource('/agendamentos', AgendamentoController::class)->middleware(AgendamentoMiddleware::class)->except('show');
+Route::resource('/agendamentos', AgendamentoController::class)->middleware(AgendamentoMiddleware::class);
 
 // Rota para lista dos médicos cadastrados
-Route::get('/medicos', [UsuarioController::class, 'listarMedicos'])->name('medicos.index');
+Route::get('/medicos', [UsuarioController::class, 'listarMedicos'])->middleware('auth')->name('medicos.index');
 
 // Rota para ver os horários dos médicos
 Route::get('usuarios/{id}', [UsuarioController::class, 'show'])->name('usuarios.show');
 
 
-Route::get('/consulta/create', [ConsultaController::class, 'create'])->name('consulta.create');
+Route::get('/consulta/create', [ConsultaController::class, 'create'])->middleware('auth')->name('consulta.create');
 
 
-Route::post('/consulta/store', [ConsultaController::class, 'store'])->name('consulta.store');
+Route::post('/consulta/store', [ConsultaController::class, 'store'])->middleware('auth')->name('consulta.store');
+
+
+// Rotas para consultas
+// Rota para exibir o formulário de edição
+Route::get('/consulta/{id}/edit', [ConsultaController::class, 'edit'])->name('consulta.edit');
+
+// Rota para atualizar uma consulta existente
+Route::put('/consulta/{id}', [ConsultaController::class, 'update'])->name('consulta.update');
+
+
+
+Route::resource('consultas', ConsultaController::class)->middleware('auth');
