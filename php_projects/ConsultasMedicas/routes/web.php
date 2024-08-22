@@ -57,4 +57,4 @@ Route::put('/consulta/{id}', [ConsultaController::class, 'update'])->name('consu
 
 Route::resource('consultas', ConsultaController::class)->middleware('auth');
 
-Route::post('/verificar-consulta', [ConsultaController::class, 'verificarConsulta'])->name('verificar.consulta');
+// Route::post('/verificar-consulta', [ConsultaController::class, 'verificarConsulta'])->name('verificar.consulta');

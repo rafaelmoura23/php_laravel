@@ -10,6 +10,7 @@ use App\Models\Agendamento;
 use Carbon\Carbon;
 use App\Models\Consulta;
 
+
 class UsuarioController extends Controller
 {
     // Exibir o formulário de login
@@ -51,15 +52,15 @@ class UsuarioController extends Controller
         // Validações para o registro
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:usuarios', // Atualize o nome da tabela conforme necessário
+            'email' => 'required|email|max:255|unique:usuarios',
             'data_nascimento' => 'required|date',
-            'telefone' => 'required|string|max:15',
+            'telefone' => 'required|phone:AUTO',
             'endereco' => 'required|string|max:255',
             'plano_saude' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
             'tipo' => 'required|string|in:usuario,medico',
-            'rg_usuario' => 'nullable|string|max:20',
-            'crm_medico' => 'nullable|string|max:20',
+            'rg_usuario' => 'nullable|digits:9',
+            'crm_medico' => 'nullable|string|max:10',
             'especialidade' => 'nullable|string|max:255',
         ]);
 

@@ -1,31 +1,33 @@
-<!-- resources/views/agendamentos/index.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Agendamentos</h1>
+<div class="container my-4">
+    <h1 class="mb-4">Agendamentos</h1>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-        <a href="{{ route('agendamentos.create') }}" class="btn btn-primary mb-3">Novo Agendamento</a>
+    <a href="{{ route('agendamentos.create') }}" class="btn btn-primary mb-3">
+        Novo Agendamento
+    </a>
 
-        <table class="table table-bordered">
-            <thead>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
                 <tr>
                     <th>ID</th>
                     <th>Turno</th>
                     <th>Mês</th>
                     <th>Nome do Médico</th>
-                    <th>Endereço do Consultório</th>
+                    <th>Endereço</th>
                     <th>Preço</th>
                     <th>Modalidade</th>
                     <th>Especialidade</th>
-                    <th>CRM do Médico</th>
+                    <th>CRM</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -41,12 +43,16 @@
                         <td>{{ $agendamento->modalidade }}</td>
                         <td>{{ $agendamento->especialidade }}</td>
                         <td>{{ $agendamento->crm_medico }}</td>
-                        <td>
-                            <a href="{{ route('agendamentos.edit', $agendamento->id) }}" class="btn btn-sm btn-warning">Editar</a>
-                            <form action="{{ route('agendamentos.destroy', $agendamento->id) }}" method="POST" style="display:inline-block;">
+                        <td class="text-center">
+                            <a href="{{ route('agendamentos.edit', $agendamento->id) }}" class="btn btn-sm btn-warning">
+                                Editar
+                            </a>
+                            <form action="{{ route('agendamentos.destroy', $agendamento->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    Excluir
+                                </button>
                             </form>
                         </td>
                     </tr>
@@ -54,4 +60,5 @@
             </tbody>
         </table>
     </div>
+</div>
 @endsection

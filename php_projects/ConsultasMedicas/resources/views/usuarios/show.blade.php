@@ -42,11 +42,21 @@
                                     @endfor
 
                                     @foreach ($calendario['dias'] as $dia)
+                                        @php
+                                            $isWeekend = $dia->dayOfWeek == 0 || $dia->dayOfWeek == 6;
+                                        @endphp
+
                                         <td>
-                                            <button class="btn btn-light"
-                                                onclick="toggleHorarios('{{ $dia->format('Y-m-d') }}')">
-                                                {{ $dia->day }}
-                                            </button>
+                                            @if ($isWeekend)
+                                                <button class="btn btn-light disabled" disabled>
+                                                    {{ $dia->day }}
+                                                </button>
+                                            @else
+                                                <button class="btn btn-light"
+                                                    onclick="toggleHorarios('{{ $dia->format('Y-m-d') }}')">
+                                                    {{ $dia->day }}
+                                                </button>
+                                            @endif
                                             <div id="horarios-{{ $dia->format('Y-m-d') }}" class="horarios-dia"
                                                 style="display: none; margin-top: 5px;">
                                                 @if (isset($calendario['horarios'][$dia->format('Y-m-d')]) && count($calendario['horarios'][$dia->format('Y-m-d')]) > 0)
@@ -63,21 +73,21 @@
                                         </td>
 
                                         @if ($dia->dayOfWeek == 6)
-                                </tr>
-                                <tr>
-                @endif
-        @endforeach
+                                            </tr>
+                                            <tr>
+                                        @endif
+                                    @endforeach
 
-        @for ($i = $calendario['dias']->last()->dayOfWeek + 1; $i <= 6; $i++)
-            <td></td>
-        @endfor
-        </tr>
-        </tbody>
-        </table>
-    </div>
-    @endforeach
-    </div>
-    @endif
+                                    @for ($i = $calendario['dias']->last()->dayOfWeek + 1; $i <= 6; $i++)
+                                        <td></td>
+                                    @endfor
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     </div>
 
     <script>
@@ -87,9 +97,18 @@
         }
 
         function toggleHorarios(dia) {
-            const horariosDiv = document.getElementById('horarios-' + dia);
-            horariosDiv.style.display = horariosDiv.style.display === 'none' || horariosDiv.style.display === '' ? 'block' :
-                'none';
-        }
+    const horariosDiv = document.getElementById('horarios-' + dia);
+    if (horariosDiv.style.display === 'none' || horariosDiv.style.display === '') {
+        horariosDiv.style.display = 'flex';
+        horariosDiv.style.flexDirection = 'column';
+        horariosDiv.style.gap = '10px'; // Espaço entre os botões
+    } else {
+        horariosDiv.style.display = 'none';
+        horariosDiv.style.flexDirection = '';
+        horariosDiv.style.gap = ''; // Remove o espaço
+    }
+}
     </script>
 @endsection
+
+

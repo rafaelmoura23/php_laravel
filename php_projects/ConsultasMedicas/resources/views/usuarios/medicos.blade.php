@@ -4,32 +4,41 @@
 <div class="container my-4">
     <h1 class="mb-4">Lista de Médicos</h1>
 
-    <!-- Formulário de Pesquisa -->
+    {{-- Pesquisa --}}
     <form action="{{ route('medicos.index') }}" method="GET" class="mb-4">
         <div class="row">
             <div class="col-md-4 mb-3">
-                <input type="text" class="form-control" name="nome" placeholder="Nome" value="{{ request('nome') }}">
-            </div>
-            <div class="col-md-4 mb-3 custom-select">
-                <select class="form-control" name="especialidade">
-                    <option value="">Todos</option>
-                    @foreach ($especialidades as $especialidade)
-                        <option value="{{ $especialidade }}" {{ request('especialidade') == $especialidade ? 'selected' : '' }}>
-                            {{ $especialidade }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                    <input type="text" class="form-control" name="nome" placeholder="Nome" value="{{ request('nome') }}">
+                </div>
             </div>
             <div class="col-md-4 mb-3">
-                <input type="text" class="form-control" name="plano_saude" placeholder="Plano de Saúde" value="{{ request('plano_saude') }}">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
+                    <select class="form-control" name="especialidade">
+                        <option value="">Especialidades</option>
+                        @foreach ($especialidades as $especialidade)
+                            <option value="{{ $especialidade }}" {{ request('especialidade') == $especialidade ? 'selected' : '' }}>
+                                {{ $especialidade }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-hospital"></i></span>
+                    <input type="text" class="form-control" name="plano_saude" placeholder="Plano de Saúde" value="{{ request('plano_saude') }}">
+                </div>
             </div>
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary">Pesquisar</button>
+                <button type="submit" class="btn btn-primary w-100">Pesquisar</button>
             </div>
         </div>
     </form>
 
-    <!-- Cards de Médicos -->
+    {{-- Médicos --}}
     <div class="row">
         @foreach ($medicos as $medico)
             <div class="col-md-4 mb-4">
@@ -40,7 +49,7 @@
                         <p class="card-text"><strong>CRM:</strong> {{ $medico->crm_medico }}</p>
                         <p class="card-text"><strong>Localização:</strong> {{ $medico->endereco }}</p>
                         <p class="card-text"><strong>Plano de Saúde:</strong> {{ $medico->plano_saude }}</p>
-                        <a href="{{ route('usuarios.show', ['id' => $medico->id]) }}" class="btn btn-primary">Ver Horários Disponíveis</a>
+                        <a href="{{ route('usuarios.show', ['id' => $medico->id]) }}" class="btn btn-primary w-100">Ver Horários Disponíveis</a>
                     </div>
                 </div>
             </div>
@@ -50,21 +59,17 @@
 @endsection
 
 <style>
-    .custom-select {
-        position: relative;
+    .input-group-text {
+        background-color: #f8f9fa; /* Light background for icons */
     }
 
-    .custom-select select {
-        appearance: none; /* Remove o estilo padrão do navegador */
-        background: #fff url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="16" height="16"%3E%3Cpath fill="none" stroke="%23000" stroke-width="40" d="M112 184l64 64 64-64" /%3E%3C/svg>') no-repeat right 10px center; /* Adiciona a seta ao lado direito */
-        background-size: 16px; /* Tamanho da seta */
-        padding-right: 30px; /* Espaço para a seta */
-        border: 1px solid #ced4da; /* Estilo da borda */
-        border-radius: 0.25rem; /* Arredondamento dos cantos */
+    .card-img-top {
+        height: 200px;
+        object-fit: cover; /* Ensures the image covers the area */
     }
 
-    .custom-select select:focus {
-        outline: none; /* Remove o contorno de foco padrão */
-        border-color: #80bdff; /* Cor da borda quando focado */
+    .card {
+        border-radius: 0.5rem; /* Rounded corners for cards */
+        overflow: hidden; /* Ensures that child elements are contained */
     }
 </style>
