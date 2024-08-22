@@ -1,6 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="/">SeuLogo</a>
+        <a class="navbar-brand" href="/">
+            CONSULT.IA
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,16 +11,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Home</a>
                 </li>
+                <!-- Adicione mais itens de navegação conforme necessário -->
             </ul>
-            <div class="d-flex">
+            <div class="d-flex align-items-center">
                 @if (Auth::check())
                     <div class="d-flex align-items-center">
                         @if (Auth::user()->isMedico())
                             <a href="/agendamentos" class="btn btn-primary me-2">Agendamento</a>
-                            <a href="/agendamentos" class="btn btn-secondary me-2">Consultas Marcadas</a>
+                            <a href="/dashboard" class="btn btn-secondary me-2">Consultas</a>
                         @endif
                         @if (Auth::user()->isUsuario())
                             <a href="/medicos" class="btn btn-primary me-2">Médicos</a>
+                            <a href="/dashboard" class="btn btn-secondary me-2">Consultas</a>
                         @endif
                         <span class="me-3">Bem-vindo, {{ Auth::user()->nome }}</span>
                         <form action="/logout" method="post" class="d-inline">

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Usuario;
 use App\Models\Agendamento;
 use Carbon\Carbon;
+use App\Models\Consulta;
 
 class UsuarioController extends Controller
 {
@@ -97,14 +98,44 @@ class UsuarioController extends Controller
         return redirect('/');
     }
 
-    public function listarMedicos()
+    public function listarMedicos(Request $request)
     {
-        // Buscar todos os usuários que são médicos
-        $medicos = Usuario::where('tipo', 'medico')->get();
-
-        // Retornar a view com a lista de médicos
-        return view('usuarios.medicos', ['medicos' => $medicos]);
+        // Inicia a consulta para buscar médicos
+        $query = Usuario::where('tipo', 'medico');
+    
+        // Filtra por nome se o parâmetro estiver presente
+        if ($request->filled('nome')) {
+            $query->where('nome', 'like', '%' . $request->input('nome') . '%');
+        }
+    
+        // Filtra por especialidade se o parâmetro estiver presente
+        if ($request->filled('especialidade')) {
+            $query->where('especialidade', 'like', '%' . $request->input('especialidade') . '%');
+        }
+    
+        // Filtra por plano de saúde se o parâmetro estiver presente
+        if ($request->filled('plano_saude')) {
+            $query->where('plano_saude', 'like', '%' . $request->input('plano_saude') . '%');
+        }
+    
+        // Executa a consulta e obtém os resultados
+        $medicos = $query->get();
+    
+        // Obtém todas as especialidades distintas
+        $especialidades = Usuario::where('tipo', 'medico')
+                                ->pluck('especialidade')
+                                ->unique()
+                                ->sort()
+                                ->values();
+    
+        // Retorna a view com a lista de médicos e especialidades
+        return view('usuarios.medicos', [
+            'medicos' => $medicos,
+            'especialidades' => $especialidades
+        ]);
     }
+    
+
 
     // public function show($id)
     // {
@@ -117,73 +148,72 @@ class UsuarioController extends Controller
     public function show($id)
     {
         $medico = Usuario::findOrFail($id);
-    
+
         // Recupera os agendamentos e agrupa por mês
-        $agendamentos = $medico->agendamentos->groupBy(function($date) {
+        $agendamentos = $medico->agendamentos->groupBy(function ($date) {
             return \Carbon\Carbon::parse($date->data)->format('Y-m');
         });
-    
+
         $calendarios = [];
-    
+
         foreach ($agendamentos as $mesAno => $agendamentosMes) {
             // Certifique-se de que todos os meses disponíveis estão sendo processados
             $calendarios[$mesAno] = [
                 'mesAno' => \Carbon\Carbon::createFromFormat('Y-m', $mesAno),
                 'dias' => $this->getDiasDoMes($mesAno),
-                'horarios' => $this->getHorariosPorDia($agendamentosMes, $mesAno)
+                'horarios' => $this->getHorariosPorDia($agendamentosMes, $mesAno, $medico->crm_medico)
             ];
         }
-    
+
         return view('usuarios.show', [
             'medico' => $medico,
             'calendarios' => $calendarios
         ]);
     }
-    
-    /**
-     * Gera todos os dias do mês para um mês específico
-     *
-     * @param string $mesAno
-     * @return \Illuminate\Support\Collection
-     */
+
+
     private function getDiasDoMes($mesAno)
     {
         $mesAnoObj = \Carbon\Carbon::createFromFormat('Y-m', $mesAno);
         $dias = collect();
-    
+
         for ($day = 1; $day <= $mesAnoObj->daysInMonth; $day++) {
             $dias->push($mesAnoObj->copy()->day($day));
         }
-    
+
         return $dias;
     }
-    
-    /**
-     * Gera horários disponíveis para cada dia, baseado no turno
-     *
-     * @param \Illuminate\Support\Collection $agendamentos
-     * @param string $mesAno
-     * @return array
-     */
-    private function getHorariosPorDia($agendamentos, $mesAno)
+
+    private function getHorariosPorDia($agendamentos, $mesAno, $crm_medico)
     {
         $dias = $this->getDiasDoMes($mesAno);
         $horarios = [];
-    
+
         foreach ($dias as $dia) {
-            // Teste: Gerar horários fixos para todos os dias
-            $horarios[$dia->format('Y-m-d')] = $this->generateHorarios('manhã');
+            // Busca os horários ocupados para o dia específico, filtrados pelo CRM do médico
+            $horariosOcupados = $this->getHorariosOcupados($dia, $crm_medico);
+
+            // Gera horários disponíveis para o turno desejado, por exemplo, 'manhã'
+            $horariosDisponiveis = $this->generateHorarios('manhã');
+
+            // Remove os horários ocupados dos horários disponíveis
+            $horarios[$dia->format('Y-m-d')] = array_diff($horariosDisponiveis, $horariosOcupados);
         }
-    
+
         return $horarios;
     }
-    
-    /**
-     * Gera horários com base no turno
-     *
-     * @param string $turno
-     * @return array
-     */
+
+    private function getHorariosOcupados($dia, $crm_medico)
+    {
+        // Busca todos os horários ocupados na tabela 'consultas' para o dia e médico especificados
+        $consultas = Consulta::whereDate('data', $dia->format('Y-m-d'))
+                              ->where('crm_medico', $crm_medico)
+                              ->get();
+
+        // Extrai os horários ocupados e retorna como array
+        return $consultas->pluck('horario')->toArray();
+    }
+
     private function generateHorarios($turno)
     {
         $horarios = [];
@@ -198,4 +228,12 @@ class UsuarioController extends Controller
         }
         return $horarios;
     }
-}    
+}
+
+
+
+
+
+
+
+

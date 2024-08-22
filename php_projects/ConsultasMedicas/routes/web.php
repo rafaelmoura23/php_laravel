@@ -55,6 +55,6 @@ Route::get('/consulta/{id}/edit', [ConsultaController::class, 'edit'])->name('co
 // Rota para atualizar uma consulta existente
 Route::put('/consulta/{id}', [ConsultaController::class, 'update'])->name('consulta.update');
 
-
-
 Route::resource('consultas', ConsultaController::class)->middleware('auth');
+
+Route::post('/verificar-consulta', [ConsultaController::class, 'verificarConsulta'])->name('verificar.consulta');

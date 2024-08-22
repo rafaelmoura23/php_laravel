@@ -3,7 +3,21 @@
 @section('content')
 <div class="container my-4">
     <h1>Agendar Consulta</h1>
-    
+
+    <!-- Exibir mensagens de erro -->
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <!-- Exibir mensagens de sucesso -->
+    @if(session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
+
     <form action="{{ route('consulta.store') }}" method="POST">
         @csrf
         <div class="form-group">
@@ -36,4 +50,5 @@
         <button type="submit" class="btn btn-primary">Agendar</button>
     </form>
 </div>
+
 @endsection

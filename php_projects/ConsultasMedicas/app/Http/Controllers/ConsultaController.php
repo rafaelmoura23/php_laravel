@@ -23,6 +23,7 @@ class ConsultaController extends Controller
 
     public function store(Request $request)
     {
+        // Validação dos dados
         $request->validate([
             'data' => 'required|date',
             'horario' => 'required|string',
@@ -30,6 +31,17 @@ class ConsultaController extends Controller
             'rg_usuario' => 'required|string',
             'observacoes' => 'nullable|string'
         ]);
+
+        // Verifica se já existe uma consulta com a mesma data, horário e CRM do médico
+        $consultaExistente = Consulta::where('data', $request->input('data'))
+            ->where('horario', $request->input('horario'))
+            ->where('crm_medico', $request->input('crm'))
+            ->first();
+
+        // Se já existir, retorna uma mensagem de erro
+        if ($consultaExistente) {
+            return redirect()->back()->with('error', 'Já existe uma consulta agendada para essa data e horário.');
+        }
 
         // Cria uma nova consulta
         $consulta = new Consulta();
@@ -41,10 +53,9 @@ class ConsultaController extends Controller
         $consulta->status = 'agendada'; // Defina o status conforme necessário
         $consulta->save();
 
-        // Atualiza o status do horário na tabela agendamentos
-
-        return redirect()->route('home')->with('message', 'Consulta agendada com sucesso!');
+        return redirect()->route('dashboard')->with('message', 'Consulta agendada com sucesso!');
     }
+
 
     public function edit($id)
     {
@@ -72,7 +83,7 @@ class ConsultaController extends Controller
         $consulta->status = $consulta->status; // Ou outro valor se necessário
         $consulta->save();
 
-        return redirect()->route('home')->with('message', 'Consulta atualizada com sucesso!');
+        return redirect()->route('dashboard')->with('message', 'Consulta atualizada com sucesso!');
     }
 
     public function destroy($id)
@@ -80,6 +91,6 @@ class ConsultaController extends Controller
         $consulta = Consulta::findOrFail($id);
         $consulta->delete();
 
-        return redirect()->route('home')->with('message', 'Consulta excluída com sucesso!');
+        return redirect()->back()->with('message', 'Consulta excluída com sucesso!');
     }
 }
