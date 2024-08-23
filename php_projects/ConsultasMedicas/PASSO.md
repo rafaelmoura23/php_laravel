@@ -1,5 +1,8 @@
 # Passo a Passo - Projeto Laravel: Consultas Médicas 🩺
 
+<details>
+
+<summary> Manual de Criação do Projeto </summary>
 Crie um novo projeto Laravel:
 
 ```php
@@ -1669,7 +1672,6 @@ class AgendamentoMiddleware
 
 ```
 
-
 Criar o **Controller** de Consultas:
 - `php artisan make:controller ConsultaController` 
 ``` php
@@ -1947,8 +1949,11 @@ Route::put('/consulta/{id}', [ConsultaController::class, 'update'])->name('consu
 Route::resource('consultas', ConsultaController::class)->middleware('auth');
 ```
 
+</details>
 
-## Escopo
+
+<details> 
+<summary> Escopo </summary>
 
 `Escopo:`
 ```Desenvolver uma plataforma online para conectar médicos e pacientes. Médicos poderão se cadastrar, cadastrar horários disponíveis para consultas, definir preços e modalidades, enquanto pacientes poderão se cadastrar , buscar médicos, visualizar horários e agendar consultas.
@@ -2091,7 +2096,12 @@ A plataforma pode enfrentar problemas de desempenho ou escalabilidade à medida 
 Testes e otimização de recursos.
 ```
 
-## Diagramas
+ </details> 
+
+<details> 
+
+<summary> Diagramas  </summary>
+
 Diagrama de **Classe**:
 ![Diagrama de Classe](z_documentacao\diagrama_classes.png)
 
@@ -2101,4 +2111,52 @@ Diagrama de **Fluxo**:
 
 Diagrama de **Uso**:
 ![Diagrama de Uso](z_documentacao\diagrama_uso.png)
+</details> 
 
+
+<details> 
+<summary> Manual Simples de Navegação </summary>
+
+1. `Página Inicial (Home)`
+- Assim que você acessa o sistema, você será levado para a página inicial. Aqui, você pode ver uma visão geral do site e acessar as principais funcionalidades.
+
+2. `Como Fazer Login`
+- Clique em "Login" no menu.
+- Digite seu nome de usuário e senha.
+- Clique em "Entrar". Se você não tiver uma conta, clique em - "Registrar" para criar uma.
+
+3. `Registrando-se no Sistema`
+- Vá para a página de "Registrar".
+- Preencha seus dados como nome, e-mail, e crie uma senha.
+- Clique em "Registrar" para finalizar.
+
+4. `Página do Usuário (Dashboard)`
+- Depois de fazer login, você será levado ao seu painel de usuário.Uma visão geral de suas consultas e compromissos futuros. Links rápidos para agendar ou editar consultas.
+
+5. `Como Agendar uma Consulta`
+- Clique em "Agendamentos" no menu.
+- Clique em "Criar Novo Agendamento".
+- Escolha a data, o horário e o médico que deseja consultar.
+- Clique em "Salvar" para confirmar.
+
+6. `Editando um Agendamento ou Consulta`
+- Vá para a página de "Agendamentos" ou "Consultas".
+- Clique no agendamento ou consulta que deseja alterar.
+- Faça as mudanças necessárias e clique em "Salvar".
+
+7. `Visualizando Médicos Disponíveis`
+- Clique em "Médicos" no menu.
+- Aqui você pode ver uma lista de médicos, suas especialidades e horários disponíveis.
+- Clique no nome do médico para ver mais detalhes ou para agendar uma consulta.
+
+8. `Navegação Geral`
+- Use o menu no topo da página para mover-se entre as diferentes seções como "Home", "Consultas" e "Médicos"....
+- Cada seção tem botões e links que facilitam a realização de ações como criar, editar ou visualizar informações.
+
+9. `Página de Boas-Vindas`
+- A Página de Boas-Vindas é a primeira coisa que novos usuários veem. Aqui você encontra informações úteis sobre o sistema e como começar a usar.
+
+10. `Sair do Sistema`
+- Para sair do sistema, clique em "Logout" no canto superior direito.
+
+</details> 

@@ -116,7 +116,7 @@ class UsuarioController extends Controller
         }
         $medicos = $query->get();
         $especialidades = Usuario::where('tipo', 'medico')
-                                ->pluck('especialidade')
+                                ->pluck('especialidade') // pluck => apenas a coluna especialidades
                                 ->unique()
                                 ->sort()
                                 ->values();
@@ -159,10 +159,13 @@ class UsuarioController extends Controller
         $mesAnoObj = \Carbon\Carbon::createFromFormat('Y-m', $mesAno);
         $dias = collect();
 
+        // itera sobre todos os dias do mês
+        // daysinMonth => carbon
         for ($day = 1; $day <= $mesAnoObj->daysInMonth; $day++) {
+            // vai adicionando os dias a variavel dias - obj.carbon
             $dias->push($mesAnoObj->copy()->day($day));
         }
-
+        //todos os dias de cada mês
         return $dias;
     }
 
