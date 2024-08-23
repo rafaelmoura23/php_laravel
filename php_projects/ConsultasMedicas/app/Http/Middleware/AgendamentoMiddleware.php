@@ -19,6 +19,6 @@ class AgendamentoMiddleware
         if (Auth::check() && Auth::user()->tipo === 'medico') {
             return $next($request);
         }
-        return redirect()->route('')->withErrors(['access' => 'Você não tem permissão para acessar essa área.']);
+        return redirect()->route('login')->withErrors(['access' => 'Você não tem permissão para acessar essa área.']);
     }
 }

@@ -41,21 +41,13 @@ class AgendamentoController extends Controller
         return redirect()->route('agendamentos.index')->with('success', 'Agendamento criado com sucesso.');
     }
 
-    // Exibe um único agendamento
-    public function show($id)
-    {
-        $agendamento = Agendamento::findOrFail($id);
-        return view('agendamentos.show', compact('agendamento'));
-    }
 
-    // Mostra o formulário para editar um agendamento existente
     public function edit($id)
     {
         $agendamento = Agendamento::findOrFail($id);
         return view('agendamentos.edit', compact('agendamento'));
     }
 
-    // Atualiza um agendamento no banco de dados
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([

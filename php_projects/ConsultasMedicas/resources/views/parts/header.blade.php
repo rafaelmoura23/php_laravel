@@ -13,7 +13,6 @@
                         <i class="bi bi-house-door"></i> Home
                     </a>
                 </li>
-                <!-- Adicione mais itens de navegação conforme necessário -->
             </ul>
             <div class="d-flex align-items-center">
                 @if (Auth::check())

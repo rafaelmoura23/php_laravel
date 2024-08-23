@@ -8,8 +8,8 @@
         <p class="lead">Organize e gerencie suas consultas de forma fácil e eficiente.</p>
         <h4>🏠</h4>
     </div>
-
-    <!-- Cards de Funcionalidades -->
+    
+    {{-- Cards --}}
     <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm border-light">
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <!-- Seção Sobre -->
+    {{-- Sobre --}}
     <div class="text-center mt-5">
         <h2>Sobre o Sistema</h2>
         <p class="lead">Este sistema foi desenvolvido para simplificar o processo de agendamento de consultas e gerenciar informações de médicos e pacientes de forma eficiente.</p>

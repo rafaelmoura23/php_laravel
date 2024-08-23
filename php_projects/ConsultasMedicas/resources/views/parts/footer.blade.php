@@ -14,6 +14,3 @@
       </ul>
     </footer>
   </div>
-
-  <style>
-

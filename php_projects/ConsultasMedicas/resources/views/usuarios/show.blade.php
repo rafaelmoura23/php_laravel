@@ -73,21 +73,21 @@
                                         </td>
 
                                         @if ($dia->dayOfWeek == 6)
-                                            </tr>
-                                            <tr>
-                                        @endif
-                                    @endforeach
-
-                                    @for ($i = $calendario['dias']->last()->dayOfWeek + 1; $i <= 6; $i++)
-                                        <td></td>
-                                    @endfor
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                @endforeach
-            </div>
-        @endif
+                                <tr>
+                @endif
+        @endforeach
+
+        @for ($i = $calendario['dias']->last()->dayOfWeek + 1; $i <= 6; $i++)
+            <td></td>
+        @endfor
+        </tr>
+        </tbody>
+        </table>
+    </div>
+    @endforeach
+    </div>
+    @endif
     </div>
 
     <script>
@@ -97,18 +97,16 @@
         }
 
         function toggleHorarios(dia) {
-    const horariosDiv = document.getElementById('horarios-' + dia);
-    if (horariosDiv.style.display === 'none' || horariosDiv.style.display === '') {
-        horariosDiv.style.display = 'flex';
-        horariosDiv.style.flexDirection = 'column';
-        horariosDiv.style.gap = '10px'; // Espaço entre os botões
-    } else {
-        horariosDiv.style.display = 'none';
-        horariosDiv.style.flexDirection = '';
-        horariosDiv.style.gap = ''; // Remove o espaço
-    }
-}
+            const horariosDiv = document.getElementById('horarios-' + dia);
+            if (horariosDiv.style.display === 'none' || horariosDiv.style.display === '') {
+                horariosDiv.style.display = 'flex';
+                horariosDiv.style.flexDirection = 'column';
+                horariosDiv.style.gap = '10px';
+            } else {
+                horariosDiv.style.display = 'none';
+                horariosDiv.style.flexDirection = '';
+                horariosDiv.style.gap = '';
+            }
+        }
     </script>
 @endsection
-
-

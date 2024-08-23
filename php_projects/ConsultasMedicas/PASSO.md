@@ -378,32 +378,1268 @@ class UsuarioController extends Controller
         return $horarios;
     }
 }
-
 ```
 
-Criar o layouts.app
-- php artisan make:view layouts.app
+Atualizar o ```config/auth.php``` para lidar com Usuario e não User:
+```
+<?php
 
-Criar Header e Footer:
-- php artisan make:view parts.header
-- php artisan make:view parts.footer
-
-
-Criar View:
-- php artisan make:view usuarios.registro
-- php artisan make:view usuarios.login
-- php artisan make:view usuarios.dashboard
-
-Criar a Home:
-- php artisan make:view home
-
-Criar HomeController
-- php artisan make:controller HomeController
-
-Criar DashboardController
-- php artisan make:controller DashboardController
+return [
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Defaults
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the default authentication "guard" and password
+    | reset "broker" for your application. You may change these values
+    | as required, but they're a perfect start for most applications.
+    |
+    */
+
+
+    'defaults' => [
+        'guard' => 'usuario',
+        'passwords' => 'users',
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Guards
+    |--------------------------------------------------------------------------
+    |
+    | Next, you may define every authentication guard for your application.
+    | Of course, a great default configuration has been defined for you
+    | which utilizes session storage plus the Eloquent user provider.
+    |
+    | All authentication guards have a user provider, which defines how the
+    | users are actually retrieved out of your database or other storage
+    | system used by the application. Typically, Eloquent is utilized.
+    |
+    | Supported: "session"
+    |
+    */
+
+
+    'guards' => [
+        'usuario' => [
+            'driver' => 'session',
+            'provider' => 'usuario',
+        ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+        ],
+    ],
+    /*
+    |--------------------------------------------------------------------------
+    | User Providers
+    |--------------------------------------------------------------------------
+    |
+    | All authentication guards have a user provider, which defines how the
+    | users are actually retrieved out of your database or other storage
+    | system used by the application. Typically, Eloquent is utilized.
+    |
+    | If you have multiple user tables or models you may configure multiple
+    | providers to represent the model / table. These providers may then
+    | be assigned to any extra authentication guards you have defined.
+    |
+    | Supported: "database", "eloquent"
+    |
+    */
+
+
+    'providers' => [
+        'usuario' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Usuario::class,
+        ],
+
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resetting Passwords
+    |--------------------------------------------------------------------------
+    |
+    | These configuration options specify the behavior of Laravel's password
+    | reset functionality, including the table utilized for token storage
+    | and the user provider that is invoked to actually retrieve users.
+    |
+    | The expiry time is the number of minutes that each reset token will be
+    | considered valid. This security feature keeps tokens short-lived so
+    | they have less time to be guessed. You may change this as needed.
+    |
+    | The throttle setting is the number of seconds a user must wait before
+    | generating more password reset tokens. This prevents the user from
+    | quickly generating a very large amount of password reset tokens.
+    |
+    */
+
+
+    'passwords' => [
+        'users' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Password Confirmation Timeout
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the amount of seconds before a password confirmation
+    | window expires and users are asked to re-enter their password via the
+    | confirmation screen. By default, the timeout lasts for three hours.
+    |
+    */
+
+
+    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+
+
+];
+```
+
+
+Criar o ```layouts.app:```
+- ```php artisan make:view layouts.app```
+```
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config('app.name', 'Consultas Médicas') }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/inputmask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+
+    @include('parts.header')
+
+
+    <div class="container">
+        @yield('content')
+    </div>
+
+    @yield('scripts')
+    @include('parts.footer')
+
+</body>
+
+</html>
+
+```
+Criar o **Header** e o **Footer**:
+- `php artisan make:view parts.header`
+```
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="/">
+            <i class="bi bi-heart-pulse-fill"></i> CONSULT.IA
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        <i class="bi bi-house-door"></i> Home
+                    </a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                @if (Auth::check())
+                    <div class="d-flex align-items-center">
+                        @if (Auth::user()->isMedico())
+                            <a href="/agendamentos" class="btn btn-primary me-2">
+                                <i class="bi bi-calendar-plus"></i> Agendamento
+                            </a>
+                            <a href="/dashboard" class="btn btn-secondary me-2">
+                                <i class="bi bi-journal-check"></i> Consultas
+                            </a>
+                        @endif
+                        <span class="me-3">Bem-vindo, <strong>{{ Auth::user()->nome }}</strong></span>
+                        @if (Auth::user()->isUsuario())
+                            <a href="/medicos" class="btn btn-primary me-2">
+                                <i class="bi bi-person-circle"></i> Médicos
+                            </a>
+                            <a href="/dashboard" class="btn btn-secondary me-2">
+                                <i class="bi bi-journal-medical"></i> Consultas
+                            </a>
+                        @endif
+                        <form action="/logout" method="post" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <a href="/login" class="btn btn-outline-primary me-2">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </a>
+                    <a href="/registro" class="btn btn-warning">
+                        <i class="bi bi-person-plus"></i> Sign-up
+                    </a>
+                @endif
+            </div>
+        </div>
+    </div>
+</nav>
+```
+
+- `php artisan make:view parts.footer`
+```
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+          <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+        <span class="mb-3 mb-md-0 text-body-secondary">© 2024 Consultas Médicas, Inc</span>
+      </div>
+  
+      <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+        <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+        <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+      </ul>
+    </footer>
+  </div>
+``` 
+
+Criar a view Home:
+- ```php artisan make:view home```
+```
+@extends('layouts.app')
+
+@section('content')
+<div class="container my-5">
+    <!-- Cabeçalho -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 font-weight-bold">Bem-vindo ao Sistema de Consultas</h1>
+        <p class="lead">Organize e gerencie suas consultas de forma fácil e eficiente.</p>
+        <h4>🏠</h4>
+    </div>
+    
+    {{-- Cards --}}
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Agendar Consultas</h5>
+                    <p class="card-text">Agende suas consultas com médicos de forma rápida e prática.</p>
+                    <a href="{{ route('consultas.create') }}" class="btn btn-primary">Agendar Agora</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Ver Consultas</h5>
+                    <p class="card-text">Consulte o histórico e os detalhes das suas consultas agendadas.</p>
+                    <a href="{{ route('consultas.index') }}" class="btn btn-primary">Ver Consultas</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Gerenciar Médicos</h5>
+                    <p class="card-text">Adicione e gerencie informações sobre médicos e suas especialidades.</p>
+                    <a href="{{ route('medicos.index') }}" class="btn btn-primary">Gerenciar Médicos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Sobre --}}
+    <div class="text-center mt-5">
+        <h2>Sobre o Sistema</h2>
+        <p class="lead">Este sistema foi desenvolvido para simplificar o processo de agendamento de consultas e gerenciar informações de médicos e pacientes de forma eficiente.</p>
+        <p>Utilize o menu acima para acessar as funcionalidades principais e gerenciar suas consultas e médicos com facilidade.</p>
+    </div>
+</div>
+@endsection
+```
+
+Criar o `controller` para Home:
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class HomeController extends Controller
+{
+    public function index()
+    {
+        return view('home');
+    }
+}
+```
+
+
+Criar **Views** para `Usuarios`:
+- `php artisan make:view usuarios.registro`
+```
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <h1 class="text-center mb-5">Registrar-se</h1>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+
+        {{-- Seleção Inicial do Tipo --}}
+        <div id="tipo-selection" class="mb-5 d-flex justify-content-center gap-4">
+            <div id="card-usuario" class="card tipo-card shadow-sm p-3 text-center" style="cursor: pointer;">
+                <div class="card-body">
+                    <i class="bi bi-person-circle display-4 text-primary"></i>
+                    <h2 class="card-title mt-3">Usuário</h2>
+                    <p>Registro para pacientes e usuários gerais</p>
+                </div>
+            </div>
+            <div id="card-medico" class="card tipo-card shadow-sm p-3 text-center" style="cursor: pointer;">
+                <div class="card-body">
+                    <i class="bi bi-stethoscope display-4 text-success"></i>
+                    <h2 class="card-title mt-3">Médico</h2>
+                    <p>Registro para médicos e profissionais da saúde</p>
+                </div>
+            </div>
+        </div>
+
+        {{-- Formulário de Registro --}}
+        <form id="registration-form" method="POST" action="{{ route('usuarios.registro') }}" style="display: none;"
+            class="shadow p-4 bg-light rounded">
+            @csrf
+
+            <input type="hidden" id="tipo" name="tipo" value="">
+
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror"
+                    value="{{ old('nome') }}" required>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                    value="{{ old('email') }}" required>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="data_nascimento" class="form-label">Data de Nascimento</label>
+                <input type="date" name="data_nascimento"
+                    class="form-control @error('data_nascimento') is-invalid @enderror" value="{{ old('data_nascimento') }}"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="telefone" class="form-label">Telefone</label>
+                <input type="tel" id="telefone" name="telefone"
+                    class="form-control @error('telefone') is-invalid @enderror" value="{{ old('telefone') }}" required>
+
+            </div>
+
+            <div id="usuario-fields" class="conditional-fields mb-3" style="display: none;">
+                <label for="rg_usuario" class="form-label">RG</label>
+                <input type="text" id="rg_usuario" name="rg_usuario"
+                    class="form-control @error('rg_usuario') is-invalid @enderror" value="{{ old('rg_usuario') }}">
+
+            </div>
+
+            <div class="mb-3">
+                <label for="endereco" class="form-label">Endereço</label>
+                <input type="text" name="endereco" class="form-control @error('endereco') is-invalid @enderror"
+                    value="{{ old('endereco') }}" required>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="plano_saude" class="form-label">Plano de Saúde</label>
+                <input type="text" name="plano_saude" class="form-control @error('plano_saude') is-invalid @enderror"
+                    value="{{ old('plano_saude') }}" required>
+
+            </div>
+
+            <div id="medico-fields" class="conditional-fields">
+                <div class="mb-3">
+                    <label for="crm_medico" class="form-label">CRM</label>
+                    <input type="text" name="crm_medico" class="form-control @error('crm_medico') is-invalid @enderror"
+                        value="{{ old('crm_medico') }}">
+
+                </div>
+                <div class="mb-3">
+                    <label for="especialidade" class="form-label">Especialidade</label>
+                    <input type="text" name="especialidade"
+                        class="form-control @error('especialidade') is-invalid @enderror"
+                        value="{{ old('especialidade') }}">
+
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Senha</label>
+                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                    required>
+
+            </div>
+
+            <div class="mb-4">
+                <label for="password_confirmation" class="form-label">Confirme a Senha</label>
+                <input type="password" name="password_confirmation" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Registrar-se</button>
+        </form>
+
+    </div>
+@endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cardUsuario = document.getElementById('card-usuario');
+        const cardMedico = document.getElementById('card-medico');
+        const registrationForm = document.getElementById('registration-form');
+        const usuarioFields = document.getElementById('usuario-fields');
+        const medicoFields = document.getElementById('medico-fields');
+        const tipoInput = document.getElementById('tipo');
+
+        cardUsuario.addEventListener('click', function() {
+            registrationForm.style.display = 'block';
+            usuarioFields.style.display = 'block';
+            medicoFields.style.display = 'none';
+            tipoInput.value = 'usuario';
+            cardUsuario.classList.add('active');
+            cardMedico.classList.remove('active');
+        });
+
+        cardMedico.addEventListener('click', function() {
+            registrationForm.style.display = 'block';
+            usuarioFields.style.display = 'none';
+            medicoFields.style.display = 'block';
+            tipoInput.value = 'medico';
+            cardMedico.classList.add('active');
+            cardUsuario.classList.remove('active');
+        });
+    });
+</script>
+
+
+
+<style>
+    .tipo-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tipo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .tipo-card.active {
+        border: 2px solid #0d6efd;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #0d6efd, #6c757d);
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(45deg, #6c757d, #0d6efd);
+    }
+
+    .container {
+        max-width: 600px;
+    }
+
+    .conditional-fields {
+        display: none;
+    }
+
+    #registration-form {
+        display: none;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+    }
+</style>
+```
+- `php artisan make:view usuarios.login`
+```
+@extends('layouts.app')
+
+@section('content')
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%;">
+        <h2 class="text-center mb-4 text-primary">Login</h2>
+        <form method="POST" action="{{ route('usuarios.login') }}">
+            @csrf
+
+            <div class="form-group">
+                <label for="email" class="font-weight-bold">Email</label>
+                <input type="email" name="email" class="form-control" placeholder="Digite seu email" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="font-weight-bold">Senha</label>
+                <input type="password" name="password" class="form-control" placeholder="Digite sua senha" required>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="" class="text-muted">Esqueceu sua senha?</a>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+
+```
+- `php artisan make:view usuarios.dashboard`
+```
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <!-- Exibir mensagens de erro -->
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <!-- Exibir mensagens de sucesso -->
+        @if (session('message'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('message') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                @if (auth()->user()->tipo == 'medico')
+                    <h1 class="display-4">Bem-vindo(a), Dr(a) {{ auth()->user()->nome }}!</h1>
+                    <p class="lead">Aqui estão suas consultas.</p>
+                @else
+                    <h1 class="display-4">Bem-vindo(a), {{ auth()->user()->nome }}!</h1>
+                    <p class="lead">Confira suas consultas agendadas.</p>
+                @endif
+            </div>
+        </div>
+
+        <!-- Consultas do Médico ou Usuário -->
+        <div class="card mb-5">
+            <div class="card-header bg-primary text-white">
+                @if (auth()->user()->tipo == 'medico')
+                    <h3 class="mb-0">Suas Consultas</h3>
+                @else
+                    <h3 class="mb-0">Consultas Agendadas</h3>
+                @endif
+            </div>
+            <div class="card-body">
+                @if ($consultas->isEmpty())
+                    <p class="text-muted">Nenhuma consulta encontrada.</p>
+                @else
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Horário</th>
+                                    <th>Observações</th>
+                                    <th>{{ auth()->user()->tipo == 'medico' ? 'Paciente' : 'Médico(a)' }}</th>
+                                    <th>Timer</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($consultas as $consulta)
+                                    <tr>
+                                        <td>{{ \Carbon\Carbon::parse($consulta->data)->format('d/m/Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($consulta->horario)->format('H:i') }}</td>
+                                        <td>{{ $consulta->observacoes }}</td>
+                                        <td>{{ auth()->user()->tipo == 'medico' ? $consulta->paciente->nome : $consulta->medico->nome }}
+                                        </td>
+                                        <td>
+                                            <span class="timer badge bg-secondary"
+                                                data-date-time="{{ $consulta->data }} {{ $consulta->horario }}"></span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('consultas.edit', $consulta->id) }}"
+                                                class="btn btn-outline-warning btn-sm">Editar</a>
+                                            <form action="{{ route('consultas.destroy', $consulta->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn btn-outline-danger btn-sm">Excluir</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Consultas de Hoje -->
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">Consultas de Hoje</h3>
+            </div>
+            <div class="card-body">
+                @if ($consultasHoje->isEmpty())
+                    <p class="text-muted">Nenhuma consulta agendada para hoje.</p>
+                @else
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Horário</th>
+                                    <th>Observações</th>
+                                    <th>Médico(a)</th>
+                                    <th>Paciente</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($consultasHoje as $consulta)
+                                    <tr>
+                                        <td>{{ \Carbon\Carbon::parse($consulta->data)->format('d/m/Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($consulta->horario)->format('H:i') }}</td>
+                                        <td>{{ $consulta->observacoes }}</td>
+                                        <td>{{ $consulta->medico->nome }}</td>
+                                        <td>{{ $consulta->paciente->nome }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var timerElements = document.querySelectorAll('.timer');
+
+            timerElements.forEach(function(timerElement) {
+                var countDownDate = new Date(timerElement.dataset.dateTime).getTime();
+
+                var x = setInterval(function() {
+                    var now = new Date().getTime();
+                    var distance = countDownDate - now;
+
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    timerElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds +
+                        "s ";
+
+                    if (distance < 0) {
+                        clearInterval(x);
+                        timerElement.innerHTML = "EXPIRED";
+                        timerElement.classList.remove('bg-secondary');
+                        timerElement.classList.add('bg-danger');
+                    }
+                }, 1000);
+            });
+        });
+    </script>
+@endsection
+```
+- `php artisan make:view usuarios.show`
+```
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-4">
+        <h1>{{ $medico->nome }}</h1>
+        <p><strong>Especialidade:</strong> {{ $medico->especialidade }}</p>
+        <p><strong>CRM:</strong> {{ $medico->crm_medico }}</p>
+        <p><strong>Endereço:</strong> {{ $medico->endereco }}</p>
+        <p><strong>Plano de Saúde:</strong> {{ $medico->plano_saude }}</p>
+
+        @if (session('message'))
+            <p>{{ session('message') }}</p>
+        @else
+            <h2 class="mt-4">Meses Disponíveis</h2>
+            <div>
+                @foreach ($calendarios as $mesAno => $calendario)
+                    <button class="btn btn-primary my-2" onclick="toggleDias('{{ $mesAno }}')">
+                        {{ $calendario['mesAno']->format('F Y') }}
+                    </button>
+
+                    <div id="dias-{{ $mesAno }}" class="dias-mes" style="display: none; margin-top: 10px;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Domingo</th>
+                                    <th>Segunda</th>
+                                    <th>Terça</th>
+                                    <th>Quarta</th>
+                                    <th>Quinta</th>
+                                    <th>Sexta</th>
+                                    <th>Sábado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $startDay = $calendario['dias']->first()->startOfMonth()->dayOfWeek;
+                                @endphp
+
+                                <tr>
+                                    @for ($i = 0; $i < $startDay; $i++)
+                                        <td></td>
+                                    @endfor
+
+                                    @foreach ($calendario['dias'] as $dia)
+                                        @php
+                                            $isWeekend = $dia->dayOfWeek == 0 || $dia->dayOfWeek == 6;
+                                        @endphp
+
+                                        <td>
+                                            @if ($isWeekend)
+                                                <button class="btn btn-light disabled" disabled>
+                                                    {{ $dia->day }}
+                                                </button>
+                                            @else
+                                                <button class="btn btn-light"
+                                                    onclick="toggleHorarios('{{ $dia->format('Y-m-d') }}')">
+                                                    {{ $dia->day }}
+                                                </button>
+                                            @endif
+                                            <div id="horarios-{{ $dia->format('Y-m-d') }}" class="horarios-dia"
+                                                style="display: none; margin-top: 5px;">
+                                                @if (isset($calendario['horarios'][$dia->format('Y-m-d')]) && count($calendario['horarios'][$dia->format('Y-m-d')]) > 0)
+                                                    @foreach ($calendario['horarios'][$dia->format('Y-m-d')] as $horario)
+                                                        <button class="btn btn-secondary btn-sm"
+                                                            onclick="window.location.href='{{ route('consulta.create', ['data' => $dia->format('Y-m-d'), 'horario' => $horario, 'crm' => $medico->crm_medico]) }}'">
+                                                            {{ $horario }}
+                                                        </button>
+                                                    @endforeach
+                                                @else
+                                                    <p>Sem horários disponíveis</p>
+                                                @endif
+                                            </div>
+                                        </td>
+
+                                        @if ($dia->dayOfWeek == 6)
+                                </tr>
+                                <tr>
+                @endif
+        @endforeach
+
+        @for ($i = $calendario['dias']->last()->dayOfWeek + 1; $i <= 6; $i++)
+            <td></td>
+        @endfor
+        </tr>
+        </tbody>
+        </table>
+    </div>
+    @endforeach
+    </div>
+    @endif
+    </div>
+
+    <script>
+        function toggleDias(mesAno) {
+            const diasDiv = document.getElementById('dias-' + mesAno);
+            diasDiv.style.display = diasDiv.style.display === 'none' || diasDiv.style.display === '' ? 'block' : 'none';
+        }
+
+        function toggleHorarios(dia) {
+            const horariosDiv = document.getElementById('horarios-' + dia);
+            if (horariosDiv.style.display === 'none' || horariosDiv.style.display === '') {
+                horariosDiv.style.display = 'flex';
+                horariosDiv.style.flexDirection = 'column';
+                horariosDiv.style.gap = '10px';
+            } else {
+                horariosDiv.style.display = 'none';
+                horariosDiv.style.flexDirection = '';
+                horariosDiv.style.gap = '';
+            }
+        }
+    </script>
+@endsection
+```
+- `php artisan make:view usuarios.medicos`
+```
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-4">
+        <h1 class="mb-4">Lista de Médicos</h1>
+
+        {{-- Pesquisa --}}
+        <form action="{{ route('medicos.index') }}" method="GET" class="mb-4">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" name="nome" placeholder="Nome"
+                            value="{{ request('nome') }}">
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-briefcase"></i></span>
+                        <select class="form-control" name="especialidade">
+                            <option value="">Especialidades</option>
+                            @foreach ($especialidades as $especialidade)
+                                <option value="{{ $especialidade }}"
+                                    {{ request('especialidade') == $especialidade ? 'selected' : '' }}>
+                                    {{ $especialidade }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-hospital"></i></span>
+                        <input type="text" class="form-control" name="plano_saude" placeholder="Plano de Saúde"
+                            value="{{ request('plano_saude') }}">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary w-100">Pesquisar</button>
+                </div>
+            </div>
+        </form>
+
+        {{-- Médicos --}}
+        <div class="row">
+            @foreach ($medicos as $medico)
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $medico->nome }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ $medico->especialidade }}</h6>
+                            <p class="card-text"><strong>CRM:</strong> {{ $medico->crm_medico }}</p>
+                            <p class="card-text"><strong>Localização:</strong> {{ $medico->endereco }}</p>
+                            <p class="card-text"><strong>Plano de Saúde:</strong> {{ $medico->plano_saude }}</p>
+                            <a href="{{ route('usuarios.show', ['id' => $medico->id]) }}" class="btn btn-primary w-100">Ver
+                                Horários Disponíveis</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+@endsection
+
+<style>
+    .input-group-text {
+        background-color: #f8f9fa;
+    }
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .card {
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+</style>
+```
+
+Criar o **DashboardController**
+- `php artisan make:controller DashboardController`
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Consulta;
+use Carbon\Carbon;
+
+class DashboardController extends Controller
+{
+    public function index(Request $request)
+    {
+        $usuario = Auth::user();
+    
+        if ($usuario->tipo == 'medico') {
+            $consultas = Consulta::where('crm_medico', $usuario->crm_medico)
+                                 ->with('medico')
+                                 ->get();
+            $consultasHoje = Consulta::where('crm_medico', $usuario->crm_medico)
+                                     ->whereDate('data', Carbon::today()) 
+                                     ->with('medico')
+                                     ->get();
+        } else {
+            $consultas = Consulta::where('rg_usuario', $usuario->rg_usuario)
+                                 ->with('paciente')
+                                 ->get();
+            $consultasHoje = Consulta::where('rg_usuario', $usuario->rg_usuario)
+                                     ->whereDate('data', Carbon::today()) 
+                                     ->with('paciente')
+                                     ->get();
+        }
+    
+        return view('usuarios.dashboard', compact('consultas', 'consultasHoje'));
+    }
+    
+}
+```
+
+Criar o **AgendamentoController:**
+- `php artisan make:controller AgendamentoController`
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Agendamento;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class AgendamentoController extends Controller
+{
+    // Exibe uma lista de agendamentos
+    public function index()
+    {
+        $medico = Auth::user()->crm_medico;
+        $agendamentos = Agendamento::where('crm_medico', $medico)->get();
+        return view('agendamentos.index', compact('agendamentos'));
+    }
+
+    // Mostra o formulário para criar um novo agendamento
+    public function create()
+    {
+        return view('agendamentos.create');
+    }
+
+    // Salva um novo agendamento no banco de dados
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'turno' => 'required|string|max:255',
+            'nome_medico' => 'required|string|max:255',
+            'mes' => 'required|string',
+            'endereco_consultorio' => 'required|string|max:255',
+            'preco' => 'required|numeric',
+            'modalidade' => 'required|string|max:255',
+            'especialidade' => 'required|string|max:255',
+            'crm_medico' => 'required|string|max:20',
+        ]);
+
+        Agendamento::create($validatedData);
+
+        return redirect()->route('agendamentos.index')->with('success', 'Agendamento criado com sucesso.');
+    }
+
+
+    public function edit($id)
+    {
+        $agendamento = Agendamento::findOrFail($id);
+        return view('agendamentos.edit', compact('agendamento'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'turno' => 'required|string|max:255',
+            'nome_medico' => 'required|string|max:255',
+            'mes' => 'required|string',
+            'endereco_consultorio' => 'required|string|max:255',
+            'preco' => 'required|numeric',
+            'modalidade' => 'required|string|max:255',
+            'especialidade' => 'required|string|max:255',
+            'crm_medico' => 'required|string|max:20',
+        ]);
+
+        $agendamento = Agendamento::findOrFail($id);
+        $agendamento->update($validatedData);
+
+        return redirect()->route('agendamentos.index')->with('success', 'Agendamento atualizado com sucesso.');
+    }
+
+    // Exclui um agendamento do banco de dados
+    public function destroy($id)
+    {
+        $agendamento = Agendamento::findOrFail($id);
+        $agendamento->delete();
+
+        return redirect()->route('agendamentos.index')->with('success', 'Agendamento excluído com sucesso.');
+    }
+}
+```
+
+Criar as **Views** para Agendamentos:
+- `php artisan make:view agendamentos.create`
+```
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <h1>Novo Agendamento</h1>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('agendamentos.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="turno" class="form-label">Turno</label>
+                <select name="turno" id="turno" class="form-control">
+                    <option value="Manhã">Manhã</option>
+                    <option value="Tarde">Tarde</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="mes" class="form-label">Mês</label>
+                <input type="month" name="mes" id="mes" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="nome_medico" class="form-label">Nome do Médico</label>
+                <input type="text" name="nome_medico" class="form-control" id="nome_medico" value="{{ auth()->user()->nome }}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="endereco_consultorio" class="form-label">Endereço do Consultório</label>
+                <input type="text" name="endereco_consultorio" class="form-control" id="endereco_consultorio" value="{{ auth()->user()->endereco }}">
+            </div>
+            <div class="mb-3">
+                <label for="preco" class="form-label">Preço</label>
+                <input type="number" name="preco" class="form-control" id="preco">
+            </div>
+            <div class="mb-3">
+                <label for="modalidade" class="form-label">Modalidade</label>
+                <select name="modalidade" id="modalidade" class="form-control">
+                    <option value="Presencial">Presencial</option>
+                    <option value="Online">Online</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="especialidade" class="form-label">Especialidade</label>
+                <input type="text" name="especialidade" class="form-control" id="especialidade" value="{{ auth()->user()->especialidade }}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="crm_medico" class="form-label">CRM do Médico</label>
+                <input type="text" name="crm_medico" class="form-control" id="crm_medico" value="{{ auth()->user()->crm_medico }}" readonly>
+            </div>
+            <div id="calendar-container"></div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+    @endsection
+```
+
+- `php artisan make:view agendamentos.edit`
+```
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <h1>Editar Agendamento</h1>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('agendamentos.update', $agendamento->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="form-group">
+                <label for="turno">Turno</label>
+                <input type="text" class="form-control" id="turno" name="turno" value="{{ $agendamento->turno }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="nome_medico">Nome do Médico</label>
+                <input type="text" class="form-control" id="nome_medico" name="nome_medico"
+                    value="{{ $agendamento->nome_medico }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mes">Mês</label>
+                <input type="text" class="form-control" id="mes" name="mes" value="{{ $agendamento->mes }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="endereco_consultorio">Endereço do Consultório</label>
+                <input type="text" class="form-control" id="endereco_consultorio" name="endereco_consultorio"
+                    value="{{ $agendamento->endereco_consultorio }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="preco">Preço</label>
+                <input type="number" step="0.01" class="form-control" id="preco" name="preco"
+                    value="{{ $agendamento->preco }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="modalidade">Modalidade</label>
+                <input type="text" class="form-control" id="modalidade" name="modalidade"
+                    value="{{ $agendamento->modalidade }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="especialidade">Especialidade</label>
+                <input type="text" class="form-control" id="especialidade" name="especialidade"
+                    value="{{ $agendamento->especialidade }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="crm_medico">CRM do Médico</label>
+                <input type="text" class="form-control" id="crm_medico" name="crm_medico"
+                    value="{{ $agendamento->crm_medico }}" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </form>
+    </div>
+@endsection
+```
+
+- `php artisan make:view agendamentos.index`
+```
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-4">
+        <h1 class="mb-4">Agendamentos</h1>
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <a href="{{ route('agendamentos.create') }}" class="btn btn-primary mb-3">
+            Novo Agendamento
+        </a>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Turno</th>
+                        <th>Mês</th>
+                        <th>Nome do Médico</th>
+                        <th>Endereço</th>
+                        <th>Preço</th>
+                        <th>Modalidade</th>
+                        <th>Especialidade</th>
+                        <th>CRM</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($agendamentos as $agendamento)
+                        <tr>
+                            <td>{{ $agendamento->id }}</td>
+                            <td>{{ $agendamento->turno }}</td>
+                            <td>{{ $agendamento->mes }}</td>
+                            <td>{{ $agendamento->nome_medico }}</td>
+                            <td>{{ $agendamento->endereco_consultorio }}</td>
+                            <td>{{ $agendamento->preco }}</td>
+                            <td>{{ $agendamento->modalidade }}</td>
+                            <td>{{ $agendamento->especialidade }}</td>
+                            <td>{{ $agendamento->crm_medico }}</td>
+                            <td class="text-center">
+                                <a href="{{ route('agendamentos.edit', $agendamento->id) }}"
+                                    class="btn btn-sm btn-warning">
+                                    Editar
+                                </a>
+                                <form action="{{ route('agendamentos.destroy', $agendamento->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endsection
+```
 
 Definir as rotas em `routes/web.php:`
 ```
