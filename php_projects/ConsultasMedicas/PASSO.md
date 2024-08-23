@@ -163,7 +163,7 @@ return new class extends Migration
 ```
 
 Aplicar as alterações no banco de dados:
-- ```php artisan migrate``` => (realizar alterações/criações das tabelas no banco de dado)
+- ```php artisan migrate``` => (realizar alterações/criações das tabelas no banco de dados)
 
 Criação do Controller para Usuario:
 - ```php artisan make:controller UsuarioController```
