@@ -58,8 +58,8 @@ class UsuarioController extends Controller
         'plano_saude' => 'required|string|max:255',
         'password' => 'required|string|min:8|confirmed',
         'tipo' => 'required|string|in:usuario,medico',
-        'rg_usuario' => 'nullable|digits:9',
-        'crm_medico' => 'nullable|string|max:10',
+        'rg_usuario' => 'nullable|string',
+        'crm_medico' => 'nullable|string',
         'especialidade' => 'nullable|string|max:255',
     ]);
 

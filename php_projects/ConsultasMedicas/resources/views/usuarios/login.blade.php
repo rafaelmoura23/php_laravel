@@ -7,6 +7,18 @@
         <form method="POST" action="{{ route('usuarios.login') }}">
             @csrf
 
+            <!-- Exibir mensagens de erro -->
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+
             <div class="form-group">
                 <label for="email" class="font-weight-bold">Email</label>
                 <input type="email" name="email" class="form-control" placeholder="Digite seu email" required autofocus>
