@@ -50,7 +50,7 @@ class ConsultaController extends Controller
         $consulta->crm_medico = $request->input('crm');
         $consulta->rg_usuario = $request->input('rg_usuario');
         $consulta->observacoes = $request->input('observacoes');
-        $consulta->status = 'agendada'; // Defina o status conforme necessário
+        $consulta->status = 'agendada';
         $consulta->save();
 
         return redirect()->route('dashboard')->with('message', 'Consulta agendada com sucesso!');
@@ -80,7 +80,7 @@ class ConsultaController extends Controller
         $consulta->crm_medico = $request->input('crm');
         $consulta->rg_usuario = $request->input('rg_usuario');
         $consulta->observacoes = $request->input('observacoes');
-        $consulta->status = $consulta->status; // Ou outro valor se necessário
+        $consulta->status = $consulta->status;
         $consulta->save();
 
         return redirect()->route('dashboard')->with('message', 'Consulta atualizada com sucesso!');

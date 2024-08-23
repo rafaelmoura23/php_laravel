@@ -1,20 +1,18 @@
 # Passo a Passo - Projeto Laravel: Consultas Médicas 🩺
 
-## 1. Criação do Projeto
-
 Crie um novo projeto Laravel:
 
-```bash
+```php
 composer create laravel/laravel ConsultasMedicas --prefer-dist
 ```
 
 Criação do banco de dados:
-```bash
-Create database consultas_medicas
+```php
+CREATE DATABASE consultas_medicas
 ```
 
 Edição do arquivo `.env:`
-```
+``` php
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
@@ -24,7 +22,7 @@ DB_PASSWORD=postgres
 ```
 
 Criação dos `models:`
-```
+``` php
 php artisan make:model Usuario -m
 php artisan make:model Consulta -m
 php artisan make:model Agendamento -m
@@ -32,7 +30,7 @@ php artisan make:model Agendamento -m
 
 Editar os `migrations`:
 - usuarios
-```
+``` php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -76,7 +74,7 @@ return new class extends Migration
 ```
 
 - agendamentos
-```
+``` php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -116,7 +114,7 @@ return new class extends Migration
 ```
 
 - consultas
-```
+``` php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -169,7 +167,7 @@ Aplicar as alterações no banco de dados:
 
 Criação do Controller para Usuario:
 - ```php artisan make:controller UsuarioController```
-```
+``` php
 <?php
 
 namespace App\Http\Controllers;
@@ -381,7 +379,7 @@ class UsuarioController extends Controller
 ```
 
 Atualizar o ```config/auth.php``` para lidar com Usuario e não User:
-```
+``` php
 <?php
 
 return [
@@ -515,7 +513,7 @@ return [
 
 Criar o ```layouts.app:```
 - ```php artisan make:view layouts.app```
-```
+``` php
 <!DOCTYPE html>
 <html lang="en">
 
@@ -550,7 +548,7 @@ Criar o ```layouts.app:```
 ```
 Criar o **Header** e o **Footer**:
 - `php artisan make:view parts.header`
-```
+``` php
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
         <a class="navbar-brand fw-bold text-primary" href="/">
@@ -609,7 +607,7 @@ Criar o **Header** e o **Footer**:
 ```
 
 - `php artisan make:view parts.footer`
-```
+``` php
 <div class="container">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
       <div class="col-md-4 d-flex align-items-center">
@@ -630,7 +628,7 @@ Criar o **Header** e o **Footer**:
 
 Criar a view Home:
 - ```php artisan make:view home```
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -684,7 +682,7 @@ Criar a view Home:
 ```
 
 Criar o `controller` para Home:
-```
+``` php
 <?php
 
 namespace App\Http\Controllers;
@@ -703,7 +701,7 @@ class HomeController extends Controller
 
 Criar **Views** para `Usuarios`:
 - `php artisan make:view usuarios.registro`
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -911,7 +909,7 @@ Criar **Views** para `Usuarios`:
 </style>
 ```
 - `php artisan make:view usuarios.login`
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -945,7 +943,7 @@ Criar **Views** para `Usuarios`:
 
 ```
 - `php artisan make:view usuarios.dashboard`
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -1107,7 +1105,7 @@ Criar **Views** para `Usuarios`:
 @endsection
 ```
 - `php artisan make:view usuarios.show`
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -1222,7 +1220,7 @@ Criar **Views** para `Usuarios`:
 @endsection
 ```
 - `php artisan make:view usuarios.medicos`
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -1306,7 +1304,7 @@ Criar **Views** para `Usuarios`:
 
 Criar o **DashboardController**
 - `php artisan make:controller DashboardController`
-```
+``` php
 <?php
 
 namespace App\Http\Controllers;
@@ -1348,7 +1346,7 @@ class DashboardController extends Controller
 
 Criar o **AgendamentoController:**
 - `php artisan make:controller AgendamentoController`
-```
+``` php
 <?php
 
 namespace App\Http\Controllers;
@@ -1431,7 +1429,7 @@ class AgendamentoController extends Controller
 
 Criar as **Views** para Agendamentos:
 - `php artisan make:view agendamentos.create`
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -1496,7 +1494,7 @@ Criar as **Views** para Agendamentos:
 ```
 
 - `php artisan make:view agendamentos.edit`
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -1572,7 +1570,7 @@ Criar as **Views** para Agendamentos:
 ```
 
 - `php artisan make:view agendamentos.index`
-```
+``` php
 @extends('layouts.app')
 
 @section('content')
@@ -1641,8 +1639,262 @@ Criar as **Views** para Agendamentos:
 @endsection
 ```
 
-Definir as rotas em `routes/web.php:`
+Criar o **Middleware** de Agendamentos:
+- `php artisan make:middleware AgendamentoMiddleware`
+``` php
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+
+class AgendamentoMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        if (Auth::check() && Auth::user()->tipo === 'medico') {
+            return $next($request);
+        }
+        return redirect()->route('login')->withErrors(['access' => 'Você não tem permissão para acessar essa área.']);
+    }
+}
+
 ```
+
+
+Criar o **Controller** de Consultas:
+- `php artisan make:controller ConsultaController` 
+``` php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Consulta;
+use App\Models\Agendamento;
+
+class ConsultaController extends Controller
+{
+    public function create(Request $request)
+    {
+        $data = $request->input('data');
+        $horario = $request->input('horario');
+        $crm = $request->input('crm');
+
+        return view('consultas.create', [
+            'data' => $data,
+            'horario' => $horario,
+            'crm' => $crm
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        // Validação dos dados
+        $request->validate([
+            'data' => 'required|date',
+            'horario' => 'required|string',
+            'crm' => 'required|string',
+            'rg_usuario' => 'required|string',
+            'observacoes' => 'nullable|string'
+        ]);
+
+        // Verifica se já existe uma consulta com a mesma data, horário e CRM do médico
+        $consultaExistente = Consulta::where('data', $request->input('data'))
+            ->where('horario', $request->input('horario'))
+            ->where('crm_medico', $request->input('crm'))
+            ->first();
+
+        // Se já existir, retorna uma mensagem de erro
+        if ($consultaExistente) {
+            return redirect()->back()->with('error', 'Já existe uma consulta agendada para essa data e horário.');
+        }
+
+        // Cria uma nova consulta
+        $consulta = new Consulta();
+        $consulta->data = $request->input('data');
+        $consulta->horario = $request->input('horario');
+        $consulta->crm_medico = $request->input('crm');
+        $consulta->rg_usuario = $request->input('rg_usuario');
+        $consulta->observacoes = $request->input('observacoes');
+        $consulta->status = 'agendada';
+        $consulta->save();
+
+        return redirect()->route('dashboard')->with('message', 'Consulta agendada com sucesso!');
+    }
+
+
+    public function edit($id)
+    {
+        $consulta = Consulta::findOrFail($id);
+
+        return view('consultas.edit', compact('consulta'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'data' => 'required|date',
+            'horario' => 'required|string',
+            'crm' => 'required|string',
+            'rg_usuario' => 'required|string',
+            'observacoes' => 'nullable|string'
+        ]);
+
+        $consulta = Consulta::findOrFail($id);
+        $consulta->data = $request->input('data');
+        $consulta->horario = $request->input('horario');
+        $consulta->crm_medico = $request->input('crm');
+        $consulta->rg_usuario = $request->input('rg_usuario');
+        $consulta->observacoes = $request->input('observacoes');
+        $consulta->status = $consulta->status;
+        $consulta->save();
+
+        return redirect()->route('dashboard')->with('message', 'Consulta atualizada com sucesso!');
+    }
+
+    public function destroy($id)
+    {
+        $consulta = Consulta::findOrFail($id);
+        $consulta->delete();
+
+        return redirect()->back()->with('message', 'Consulta excluída com sucesso!');
+    }
+}
+```
+
+Criar as **Views** para Consultas:
+- `php artisan make:view consultas.create`
+``` php
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-5">
+        <div class="card shadow-sm p-4">
+            <h1 class="text-center mb-4 text-primary">Agendar Consulta</h1>
+
+            <!-- Exibir mensagens de erro -->
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Erro!</strong> {{ session('error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            <!-- Exibir mensagens de sucesso -->
+            @if (session('message'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Sucesso!</strong> {{ session('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            <form action="{{ route('consulta.store') }}" method="POST">
+                @csrf
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="data" class="font-weight-bold">Data:</label>
+                        <input type="text" class="form-control" id="data" name="data" value="{{ $data }}"
+                            readonly>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="horario" class="font-weight-bold">Horário:</label>
+                        <input type="text" class="form-control" id="horario" name="horario" value="{{ $horario }}"
+                            readonly>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="crm" class="font-weight-bold">CRM Médico:</label>
+                    <input type="text" class="form-control" id="crm" name="crm" value="{{ $crm }}"
+                        readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="rg_usuario" class="font-weight-bold">RG do Usuário:</label>
+                    <input type="text" class="form-control" id="rg_usuario" name="rg_usuario"
+                        value="{{ auth()->user()->rg_usuario }}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="observacoes" class="font-weight-bold">Observações:</label>
+                    <textarea class="form-control" id="observacoes" name="observacoes" rows="4"
+                        placeholder="Escreva aqui suas observações..."></textarea>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Agendar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+```
+
+- `php artisan make:view consultas.create`
+``` php
+@extends('layouts.app')
+
+@section('content')
+    <div class="container my-4">
+        <h1>Editar Consulta</h1>
+
+        <form action="{{ route('consulta.update', $consulta->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="data">Data:</label>
+                <input type="text" class="form-control" id="data" name="data" value="{{ $consulta->data }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="horario">Horário:</label>
+                <input type="text" class="form-control" id="horario" name="horario" value="{{ $consulta->horario }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="crm">CRM Médico:</label>
+                <input type="text" class="form-control" id="crm" name="crm" value="{{ $consulta->crm_medico }}"
+                    readonly required>
+            </div>
+
+            <div class="form-group">
+                <label for="rg_usuario">RG do Usuário:</label>
+                <input type="text" class="form-control" id="rg_usuario" name="rg_usuario"
+                    value="{{ $consulta->rg_usuario }}" readonly required>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoes">Observações:</label>
+                <textarea class="form-control" id="observacoes" name="observacoes">{{ $consulta->observacoes }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+        </form>
+    </div>
+@endsection
+```
+
+
+
+
+
+Definir as rotas em `routes/web.php:`
+``` php
 <?php
 
 use App\Http\Controllers\HomeController;
@@ -1658,18 +1910,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Rota para exibir o formulário de login
 Route::get('/login', [UsuarioController::class, 'showLoginForm'])->name('login');
 
-
 // Rota para processar o login
 Route::post('/login', [UsuarioController::class, 'login'])->name('usuarios.login');
-
 
 // Rota para exibir o formulário de registro
 Route::get('/registro', [UsuarioController::class, 'showRegistroForm'])->name('usuarios.registro');
 
-
 // Rota para processar o registro
 Route::post('/registro', [UsuarioController::class, 'registro'])->name('usuarios.registro');
-
 
 // Rota para logout
 Route::post('/logout', [UsuarioController::class, 'logout'])->name('usuarios.logout');
@@ -1686,9 +1934,7 @@ Route::get('/medicos', [UsuarioController::class, 'listarMedicos'])->middleware(
 // Rota para ver os horários dos médicos
 Route::get('usuarios/{id}', [UsuarioController::class, 'show'])->name('usuarios.show');
 
-
 Route::get('/consulta/create', [ConsultaController::class, 'create'])->middleware('auth')->name('consulta.create');
-
 
 Route::post('/consulta/store', [ConsultaController::class, 'store'])->middleware('auth')->name('consulta.store');
 
@@ -1699,6 +1945,4 @@ Route::get('/consulta/{id}/edit', [ConsultaController::class, 'edit'])->name('co
 Route::put('/consulta/{id}', [ConsultaController::class, 'update'])->name('consulta.update');
 
 Route::resource('consultas', ConsultaController::class)->middleware('auth');
-
 ```
-
