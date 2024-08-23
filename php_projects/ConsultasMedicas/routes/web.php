@@ -47,8 +47,6 @@ Route::get('/consulta/create', [ConsultaController::class, 'create'])->middlewar
 
 Route::post('/consulta/store', [ConsultaController::class, 'store'])->middleware('auth')->name('consulta.store');
 
-
-// Rotas para consultas
 // Rota para exibir o formulário de edição
 Route::get('/consulta/{id}/edit', [ConsultaController::class, 'edit'])->name('consulta.edit');
 
@@ -56,5 +54,3 @@ Route::get('/consulta/{id}/edit', [ConsultaController::class, 'edit'])->name('co
 Route::put('/consulta/{id}', [ConsultaController::class, 'update'])->name('consulta.update');
 
 Route::resource('consultas', ConsultaController::class)->middleware('auth');
-
-// Route::post('/verificar-consulta', [ConsultaController::class, 'verificarConsulta'])->name('verificar.consulta');

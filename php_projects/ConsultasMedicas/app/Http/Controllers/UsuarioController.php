@@ -28,7 +28,6 @@ class UsuarioController extends Controller
             'password' => ['required'],
         ]);
 
-        // Tenta autenticar com o guard 'usuario'
         if (Auth::guard('usuario')->attempt($credentials)) {
             $request->session()->regenerate(); // Regenera a sessão para evitar fixação de sessão
             return redirect()->intended('/dashboard');
@@ -48,22 +47,23 @@ class UsuarioController extends Controller
 
     // Processar o registro de um novo usuário
     public function registro(Request $request)
-    {
-        // Validações para o registro
-        $validatedData = $request->validate([
-            'nome' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:usuarios',
-            'data_nascimento' => 'required|date',
-            'telefone' => 'required|phone:AUTO',
-            'endereco' => 'required|string|max:255',
-            'plano_saude' => 'required|string|max:255',
-            'password' => 'required|string|min:8|confirmed',
-            'tipo' => 'required|string|in:usuario,medico',
-            'rg_usuario' => 'nullable|digits:9',
-            'crm_medico' => 'nullable|string|max:10',
-            'especialidade' => 'nullable|string|max:255',
-        ]);
+{
+    // Validações para o registro
+    $validatedData = $request->validate([
+        'nome' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:usuarios',
+        'data_nascimento' => 'required|date',
+        'telefone' => 'required|digits:11',
+        'endereco' => 'required|string|max:255',
+        'plano_saude' => 'required|string|max:255',
+        'password' => 'required|string|min:8|confirmed',
+        'tipo' => 'required|string|in:usuario,medico',
+        'rg_usuario' => 'nullable|digits:9',
+        'crm_medico' => 'nullable|string|max:10',
+        'especialidade' => 'nullable|string|max:255',
+    ]);
 
+    try {
         // Cria um novo usuário
         $usuario = Usuario::create([
             'nome' => $validatedData['nome'],
@@ -81,11 +81,13 @@ class UsuarioController extends Controller
 
         // Faz login automático do novo usuário
         Auth::login($usuario);
-
-        // Redireciona para o dashboard ou a página inicial
         return redirect('/dashboard')->with('success', 'Cadastro realizado com sucesso!');
-    }
 
+    } catch (\Exception $e) {
+
+        return redirect()->back()->withErrors(['erro' => 'Ocorreu um erro ao tentar realizar o cadastro. Por favor, tente novamente.'])->withInput();
+    }
+}
 
     // Realizar o logout do usuário
     public function logout(Request $request)
@@ -103,26 +105,16 @@ class UsuarioController extends Controller
     {
         // Inicia a consulta para buscar médicos
         $query = Usuario::where('tipo', 'medico');
-    
-        // Filtra por nome se o parâmetro estiver presente
         if ($request->filled('nome')) {
             $query->where('nome', 'like', '%' . $request->input('nome') . '%');
         }
-    
-        // Filtra por especialidade se o parâmetro estiver presente
         if ($request->filled('especialidade')) {
             $query->where('especialidade', 'like', '%' . $request->input('especialidade') . '%');
         }
-    
-        // Filtra por plano de saúde se o parâmetro estiver presente
         if ($request->filled('plano_saude')) {
             $query->where('plano_saude', 'like', '%' . $request->input('plano_saude') . '%');
         }
-    
-        // Executa a consulta e obtém os resultados
         $medicos = $query->get();
-    
-        // Obtém todas as especialidades distintas
         $especialidades = Usuario::where('tipo', 'medico')
                                 ->pluck('especialidade')
                                 ->unique()
@@ -135,16 +127,6 @@ class UsuarioController extends Controller
             'especialidades' => $especialidades
         ]);
     }
-    
-
-
-    // public function show($id)
-    // {
-    //     $medico = Usuario::with('agendamentos')->findOrFail($id);
-    //     return view('usuarios.show', ['medico' => $medico]);
-    // }
-
-
 
     public function show($id)
     {
@@ -158,7 +140,6 @@ class UsuarioController extends Controller
         $calendarios = [];
 
         foreach ($agendamentos as $mesAno => $agendamentosMes) {
-            // Certifique-se de que todos os meses disponíveis estão sendo processados
             $calendarios[$mesAno] = [
                 'mesAno' => \Carbon\Carbon::createFromFormat('Y-m', $mesAno),
                 'dias' => $this->getDiasDoMes($mesAno),
@@ -193,8 +174,6 @@ class UsuarioController extends Controller
         foreach ($dias as $dia) {
             // Busca os horários ocupados para o dia específico, filtrados pelo CRM do médico
             $horariosOcupados = $this->getHorariosOcupados($dia, $crm_medico);
-
-            // Gera horários disponíveis para o turno desejado, por exemplo, 'manhã'
             $horariosDisponiveis = $this->generateHorarios('manhã');
 
             // Remove os horários ocupados dos horários disponíveis
@@ -206,12 +185,9 @@ class UsuarioController extends Controller
 
     private function getHorariosOcupados($dia, $crm_medico)
     {
-        // Busca todos os horários ocupados na tabela 'consultas' para o dia e médico especificados
         $consultas = Consulta::whereDate('data', $dia->format('Y-m-d'))
                               ->where('crm_medico', $crm_medico)
                               ->get();
-
-        // Extrai os horários ocupados e retorna como array
         return $consultas->pluck('horario')->toArray();
     }
 
